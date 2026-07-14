@@ -262,11 +262,17 @@ function initChart() {
 
 // Initialize WebSockets
 function initWebSocket() {
-    let wsHost = window.location.host;
-    if (window.location.protocol === "file:") {
-        wsHost = "127.0.0.1:8000";
+    let wsHost = "127.0.0.1:8000";
+    let wsProtocol = "ws:";
+
+    try {
+        const url = new URL(API_BASE);
+        wsHost = url.host;
+        wsProtocol = url.protocol === "https:" ? "wss:" : "ws:";
+    } catch (e) {
+        console.error("Invalid API_BASE for WebSocket host extraction:", e);
     }
-    const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+
     const wsUrl = `${wsProtocol}//${wsHost}/ws`;
     socket = new WebSocket(wsUrl);
 
