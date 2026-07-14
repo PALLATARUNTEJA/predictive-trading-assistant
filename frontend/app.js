@@ -1080,14 +1080,19 @@ function initBottomDock() {
     if (!dock) return;
 
     // Entrance animation for bottom nav capsule (after preloader completes)
-    gsap.from(dock, {
-        opacity: 0,
-        y: 50,
-        xPercent: -50,
-        duration: 0.8,
-        delay: 1.1,
-        ease: "power3.out"
-    });
+    if (typeof gsap !== "undefined") {
+        gsap.from(dock, {
+            opacity: 0,
+            y: 50,
+            xPercent: -50,
+            duration: 0.8,
+            delay: 1.1,
+            ease: "power3.out"
+        });
+    } else {
+        dock.style.opacity = "1";
+        dock.style.transform = "translateX(-50%)";
+    }
 
     // Handle view switching
     dockBtns.forEach((btn) => {
@@ -1107,10 +1112,12 @@ function initBottomDock() {
                 targetView.classList.add("active");
 
                 // Animate entrance of the view
-                gsap.fromTo(targetView, 
-                    { opacity: 0, y: 15 },
-                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
-                );
+                if (typeof gsap !== "undefined") {
+                    gsap.fromTo(targetView, 
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+                    );
+                }
 
                 // Special case: If switching to chart view, trigger chart resize to prevent canvas 0px width bugs!
                 if (targetViewId === "view-chart" && chart) {
