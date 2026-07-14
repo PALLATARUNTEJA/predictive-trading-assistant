@@ -1083,6 +1083,7 @@ function initBottomDock() {
     gsap.from(dock, {
         opacity: 0,
         y: 50,
+        xPercent: -50,
         duration: 0.8,
         delay: 1.1,
         ease: "power3.out"

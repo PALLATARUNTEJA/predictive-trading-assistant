@@ -1384,17 +1384,17 @@ body {
     left: 50%;
     transform: translateX(-50%);
     height: 52px;
-    background: rgba(13, 15, 20, 0.85);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(11, 13, 18, 0.72) !important; /* Semi-transparent background for Apple glass style */
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important; /* Thin glass outline */
     border-radius: 100px;
     display: flex;
     align-items: center;
     padding: 0.25rem 0.25rem 0.25rem 1.25rem;
     gap: 0.85rem;
-    z-index: 999;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    z-index: 999999 !important; /* Apple dynamic z-index overlay */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1759,4 +1759,79 @@ body {
 /* Scroll padding for nav offsets */
 html {
     scroll-behavior: smooth;
+}
+
+/* App Header Specific Color Overrides (since header is dark-themed) */
+.app-header, .app-header * {
+    color: #ffffff !important;
+}
+
+.app-header .header-logo h1 span {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: #8b5cf6 !important; /* Dipa purple accent */
+}
+
+.app-header .status-indicator {
+    color: #8e94a5 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.app-header button.btn-secondary {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.app-header button.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Chatbot Specific Color Overrides (Force white text inside chatbot widget) */
+.chatbot-window {
+    background: #0c0e12 !important; /* Force dark obsidian background for chatbot */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.chatbot-window, .chatbot-window * {
+    color: #ffffff !important;
+}
+
+.chatbot-window .chat-status, .chatbot-window .chat-status * {
+    color: #8e94a5 !important;
+}
+
+.chatbot-window .msg-bubble {
+    color: #ffffff !important;
+}
+
+.chatbot-window .chat-msg.bot .msg-bubble {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.chatbot-window .chat-msg.user .msg-bubble {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+.chatbot-window .suggestion-chip {
+    color: #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+}
+
+.chatbot-window .suggestion-chip:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
+}
+
+.chatbot-window .chat-input-row input {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.chatbot-window .chat-input-row input:focus {
+    border-color: #3b82f6 !important;
 }
