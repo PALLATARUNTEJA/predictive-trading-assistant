@@ -738,6 +738,13 @@ body {
     grid-column: 2;
 }
 
+#view-holdings .holdings-card,
+#view-signals .scanner-card {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-height: 520px !important;
+}
+
 .scanner-header {
     display: flex;
     justify-content: space-between;
@@ -746,7 +753,7 @@ body {
 
 .table-wrapper {
     overflow-x: auto;
-    max-height: 250px;
+    max-height: 600px;
 }
 
 .dashboard-table {

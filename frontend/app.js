@@ -353,6 +353,12 @@ async function loadTickerData(ticker) {
     document.getElementById("chart-loader").classList.remove("hidden");
     document.getElementById("order-ticker").value = ticker;
 
+    // Automatically redirect tab layout to the Chart view page
+    const chartBtn = document.querySelector('.dock-btn[data-target="chart"]');
+    if (chartBtn && !chartBtn.classList.contains("active")) {
+        chartBtn.click();
+    }
+
     try {
         const response = await fetch(`${API_BASE}/api/chart/${ticker}?interval=${activeInterval}&period=${activePeriod}`);
         if (!response.ok) throw new Error("Ticker search failed.");
