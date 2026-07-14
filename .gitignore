@@ -1,0 +1,18 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual Environments
+venv/
+ENV/
+.env
+
+# Local Databases and ML Saved Models
+backend/portfolio.json
+backend/model.joblib
+
+# OS generated files
+.DS_Store
+Thumbs.db

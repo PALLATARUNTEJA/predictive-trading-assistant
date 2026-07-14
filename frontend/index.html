@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Predictive Assistant</title>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- TradingView Lightweight Charts Library (v4.1.1 pinned) -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body class="dark-mode">
+
+    <!-- Header / Navigation Bar -->
+    <header class="app-header glass">
+        <div class="header-logo">
+            <i class="fa-solid fa-wand-magic-sparkles logo-icon"></i>
+            <h1>Personal<span>Predictive Assistant</span></h1>
+        </div>
+        <div class="header-status">
+            <div class="status-indicator">
+                <span class="pulse-dot green" id="ws-status-dot"></span>
+                <span id="ws-status-text">Connecting...</span>
+            </div>
+            <button class="btn btn-secondary" id="btn-glossary">
+                <i class="fa-solid fa-book-bookmark"></i> Glossary
+            </button>
+            <button class="btn btn-danger btn-sm" id="btn-reset">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        
+        <!-- LEFT PANEL: Portfolio Stats & Risk Controls -->
+        <section class="grid-card stats-card glass">
+            <div class="card-header-row">
+                <h2 class="card-title"><i class="fa-solid fa-wallet"></i> Tarun Tejas Portfolio</h2>
+                <div class="portfolio-pl-badge" id="port-pl-badge">
+                    P/L: <span id="port-pl-val">$0.00 (0.00%)</span>
+                </div>
+            </div>
+            
+            <div class="portfolio-stats-container">
+                <div class="stat-box">
+                    <span class="stat-label">Net Asset Value</span>
+                    <span class="stat-value text-glow" id="port-total">$10,000.00</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Cash Balance</span>
+                    <span class="stat-value" id="port-cash">$10,000.00</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Holdings Value</span>
+                    <span class="stat-value" id="port-holdings">$0.00</span>
+                </div>
+                <div class="stat-box risk-slider-box">
+                    <div class="risk-slider-header">
+                        <span class="stat-label text-red">Drawdown Stop</span>
+                        <span class="risk-val-badge" id="lbl-drawdown-threshold">5.0%</span>
+                    </div>
+                    <input type="range" id="slider-drawdown" min="2" max="15" step="0.5" value="5">
+                </div>
+            </div>
+
+            <div class="portfolio-safety-status hidden" id="drawdown-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>TRADING FROZEN: Daily Drawdown Threshold Breached!</span>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: Live activity log -->
+        <section class="grid-card alert-feed-card glass">
+            <h2 class="card-title"><i class="fa-solid fa-bell"></i> Live Activity & Risk Alerts</h2>
+            <div class="alerts-list" id="alerts-container">
+                <div class="alert-item system">
+                    <span class="alert-time">Initial</span>
+                    <div class="alert-content">
+                        <strong>Paper Engine Online</strong>
+                        <p>Risk filters armed. WebSocket notifications listening for stop-loss triggers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MIDDLE LEFT PANEL: Interactive Charting with Tools -->
+        <section class="grid-card chart-card glass">
+            <div class="chart-header">
+                <div class="ticker-info">
+                    <h3 id="chart-ticker-name">AAPL</h3>
+                    <span class="badge" id="chart-ticker-trend">BULLISH</span>
+                    <span id="chart-ticker-price">$0.00</span>
+                    <span id="chart-ticker-change">+0.00%</span>
+                </div>
+                
+                <!-- Technical Chart Drawing Tools Panel -->
+                <div class="chart-tools-panel">
+                    <span class="tool-label"><i class="fa-solid fa-pencil"></i> Drawings:</span>
+                    <button class="btn btn-tool" id="btn-tool-support" title="Draw Support Level">
+                        <i class="fa-solid fa-grip-lines text-green"></i> Support
+                    </button>
+                    <button class="btn btn-tool" id="btn-tool-resistance" title="Draw Resistance Level">
+                        <i class="fa-solid fa-grip-lines text-red"></i> Resist
+                    </button>
+                    <button class="btn btn-tool btn-danger-tool" id="btn-tool-clear" title="Clear Drawn Overlays">
+                        <i class="fa-solid fa-eraser"></i> Clear
+                    </button>
+                </div>
+
+                <div class="chart-search">
+                    <input type="text" id="input-search-ticker" placeholder="Symbol (e.g. NVDA)">
+                    <button class="btn btn-primary btn-sm" id="btn-load-chart">Load</button>
+                </div>
+            </div>
+            
+            <!-- Timeframe selector and OHLC info bar -->
+            <div class="chart-toolbar">
+                <div class="timeframe-selector">
+                    <button class="btn-tf" data-interval="1m" data-period="7d">1m</button>
+                    <button class="btn-tf" data-interval="5m" data-period="60d">5m</button>
+                    <button class="btn-tf" data-interval="1h" data-period="2y">1h</button>
+                    <button class="btn-tf active" data-interval="1d" data-period="60d">1d</button>
+                    <button class="btn-tf" data-interval="1d" data-period="max">Max</button>
+                </div>
+                <div class="ohlc-legend" id="ohlc-legend">
+                    O: <span id="ohlc-o" class="legend-val">-</span> 
+                    H: <span id="ohlc-h" class="legend-val">-</span> 
+                    L: <span id="ohlc-l" class="legend-val">-</span> 
+                    C: <span id="ohlc-c" class="legend-val">-</span>
+                </div>
+            </div>
+
+            <div class="chart-container-wrapper">
+                <div id="tradingview-chart"></div>
+                <div class="chart-loading hidden" id="chart-loader">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Fetching market data...
+                </div>
+            </div>
+        </section>
+
+        <!-- MIDDLE RIGHT PANEL: AI Predictor & Recommendations -->
+        <section class="grid-card action-card glass">
+            <h2 class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Recommendation & Orders</h2>
+            
+            <div class="ai-recommendation-box">
+                <div class="ai-badge-row">
+                    <span class="ai-label">ML Prediction (3d CLOSE):</span>
+                    <span class="ai-pred-val text-green" id="ai-prediction">UP</span>
+                </div>
+                <div class="ai-confidence-row">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill green" id="ai-confidence-bar" style="width: 0%;"></div>
+                    </div>
+                    <span class="ai-confidence-val" id="ai-confidence-text">0.0% Conf.</span>
+                </div>
+                
+                <!-- Dynamic AI Stop Loss recommendations based on ATR/volatility -->
+                <div class="ai-suggestion-box" id="ai-risk-suggestion">
+                    <i class="fa-solid fa-circle-info text-cyan"></i>
+                    <span>Analysing risk profile...</span>
+                </div>
+            </div>
+
+            <!-- Trade Execution form -->
+            <form id="order-form" class="order-form" onsubmit="return false;">
+                <div class="form-row">
+                    <div class="form-group flex-grow">
+                        <label for="order-ticker">Symbol</label>
+                        <input type="text" id="order-ticker" readonly>
+                    </div>
+                    <div class="form-group flex-grow">
+                        <label for="order-stoploss">Stop Loss (%)</label>
+                        <input type="number" id="order-stoploss" min="1" max="90" value="20" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="order-amount">Investment Amount ($)</label>
+                    <input type="number" id="order-amount" min="10" max="10000" placeholder="Amount to buy" required>
+                </div>
+                <button class="btn btn-success" id="btn-order-buy"><i class="fa-solid fa-arrow-trend-up"></i> Execute Purchase</button>
+            </form>
+
+            <div class="market-narrative-container">
+                <h4><i class="fa-solid fa-robot"></i> Narrative Explainer</h4>
+                <div id="narrative-content" class="narrative-markdown">
+                    Select a stock to view structural analysis.
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM LEFT PANEL: Active Holdings Table (Supports Partial Selling) -->
+        <section class="grid-card holdings-card glass">
+            <h2 class="card-title"><i class="fa-solid fa-briefcase"></i> Open Positions</h2>
+            <div class="table-wrapper">
+                <table class="dashboard-table" id="holdings-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Shares Owned</th>
+                            <th>Avg Entry</th>
+                            <th>Market Price</th>
+                            <th>Total Value</th>
+                            <th>Stop Loss</th>
+                            <th>Net Profit</th>
+                            <th>Exit Execution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="empty-row">
+                            <td colspan="8">No active stock positions. Buy stocks above.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- BOTTOM RIGHT PANEL: Market Scanner -->
+        <section class="grid-card scanner-card glass">
+            <div class="scanner-header">
+                <h2 class="card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Profit Opportunity Signals</h2>
+                <button class="btn btn-secondary btn-sm" id="btn-scan-all"><i class="fa-solid fa-sync"></i> Refresh Scan</button>
+            </div>
+            <div class="table-wrapper">
+                <table class="dashboard-table" id="scanner-table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Price</th>
+                            <th>RSI</th>
+                            <th>Trend</th>
+                            <th>Candlestick Pattern</th>
+                            <th>ML Predict</th>
+                            <th>Spikes</th>
+                            <th>Chart</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="empty-row">
+                            <td colspan="8">Click Refresh Scan to check signals.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Glossary -->
+    <div class="modal-overlay hidden" id="glossary-modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-book-bookmark"></i> Market Terms Dictionary</h2>
+                <button class="modal-close" id="btn-close-glossary">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="glossary-section">
+                    <h3>Market Trends</h3>
+                    <dl>
+                        <dt><i class="fa-solid fa-arrow-trend-up text-green"></i> Bullish</dt>
+                        <dd>A market state where prices are rising or expected to rise. Buyers are in control, creating positive momentum. Our dashboard highlights Bullish indicators when stock close is above both SMA 20 and SMA 50.</dd>
+                        
+                        <dt><i class="fa-solid fa-arrow-trend-down text-red"></i> Bearish</dt>
+                        <dd>A market state where prices are falling or expected to fall. Sellers dominate, leading to price declines. If a stock falls below its moving averages, it enters a bearish condition.</dd>
+                    </dl>
+                </div>
+                
+                <div class="glossary-section">
+                    <h3>Risk Management & Safety</h3>
+                    <dl>
+                        <dt><i class="fa-solid fa-shield-halved text-red"></i> Stop-Loss (Auto-Exit)</dt>
+                        <dd>A protective risk management rule. If you buy a stock at $100 and set a 20% Stop-Loss (exiting when value becomes less than 80), the system monitors prices in real time and automatically triggers a sell order instantly to protect you from heavy losses.</dd>
+
+                        <dt><i class="fa-solid fa-triangle-exclamation text-yellow"></i> Daily Drawdown Limit</dt>
+                        <dd>An institutional-grade risk filter. If your entire portfolio loses more than your set slider threshold (e.g. 5%) of its starting cash value today, trading is immediately frozen to prevent further losses.</dd>
+                    </dl>
+                </div>
+
+                <div class="glossary-section">
+                    <h3>Technical Indicators</h3>
+                    <dl>
+                        <dt>RSI (Relative Strength Index)</dt>
+                        <dd>A momentum oscillator ranging from 0 to 100. Values above <strong>70 (Overbought)</strong> suggest the stock is over-extended and might reverse down. Values below <strong>30 (Oversold)</strong> indicate the stock is undervalued and might bounce upward.</dd>
+                        
+                        <dt>MACD (Moving Average Convergence Divergence)</dt>
+                        <dd>A trend-following momentum indicator. When the MACD line crosses above the Signal line (Bullish crossover), it signals a buying opportunity. When it crosses below (Bearish crossover), it implies downward momentum.</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btn-close-glossary-bottom">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Audio Helper -->
+    <script>
+        function playChime(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (type === 'danger') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(440, ctx.currentTime);
+                    osc.frequency.setValueAtTime(330, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.4);
+                } else {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, ctx.currentTime);
+                    osc.frequency.setValueAtTime(1200, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                }
+            } catch (e) {}
+        }
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
