@@ -1,14 +1,24 @@
 import pandas as pd
 import numpy as np
 import yfinance as yf
+import requests
+
+# Configure a custom requests session with standard browser headers to bypass cloud provider rate limits
+session = requests.Session()
+session.headers.update({
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Connection': 'keep-alive'
+})
 
 def fetch_data(ticker: str, period: str = "60d", interval: str = "1d") -> pd.DataFrame:
     """
     Fetches historical data for a given ticker from Yahoo Finance.
     """
     try:
-        # Fetch data. Force it to be a DataFrame
-        df = yf.download(ticker, period=period, interval=interval, progress=False)
+        # Fetch data. Force it to be a DataFrame and pass custom session
+        df = yf.download(ticker, period=period, interval=interval, progress=False, session=session)
         if df.empty:
             return pd.DataFrame()
         # Flatten MultiIndex columns if present (common in yfinance v0.2.x+)
