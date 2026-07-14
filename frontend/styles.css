@@ -1,17 +1,22 @@
 :root {
-    --bg-dark: #07080c;
-    --bg-card: #0d0f14;
-    --border-color: rgba(255, 255, 255, 0.05);
+    --bg-dark: #f5f6f9;      /* Dipa In House light background style */
+    --bg-card: #0c0e12;      /* Obsidian dark card background */
+    --border-color: rgba(0, 0, 0, 0.06);
     --border-cyan: rgba(59, 130, 246, 0.12);
     --border-glow: rgba(59, 130, 246, 0.25);
     
-    --text-primary: #ffffff;
-    --text-secondary: #8e94a5;
-    --text-muted: #575e70;
+    --text-primary: #0a0c10;    /* High contrast dark text outside cards */
+    --text-secondary: #565d6d;  /* Medium contrast slate text outside cards */
+    --text-muted: #8e95a5;
     
-    --cyan: #3b82f6;      /* Upgraded Dipa-style premium blue */
-    --blue: #8b5cf6;      /* Upgraded Dipa-style premium purple/violet */
-    --green: #10b981;     /* Upgraded emerald */
+    /* Card-specific definitions inside obsidian cards */
+    --card-text-primary: #ffffff;
+    --card-text-secondary: #8e94a5;
+    --card-border: rgba(255, 255, 255, 0.06);
+    
+    --cyan: #3b82f6;      /* Upgraded blue accent */
+    --blue: #8b5cf6;      /* Upgraded violet accent */
+    --green: #10b981;     /* Emerald green */
     --red: #ef4444;       /* Ruby red */
     --yellow: #f59e0b;    /* Amber yellow */
     
@@ -21,7 +26,7 @@
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     
-    --shadow-premium: 0 15px 45px rgba(0, 0, 0, 0.6);
+    --shadow-premium: 0 15px 45px rgba(0, 0, 0, 0.05);
 }
 
 /* Reset base styling */
@@ -34,16 +39,15 @@
 body {
     background-color: var(--bg-dark);
     background-image: 
-        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 40%),
-        radial-gradient(at 100% 0%, rgba(0, 243, 255, 0.05) 0px, transparent 40%),
-        radial-gradient(at 50% 100%, rgba(74, 222, 128, 0.03) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.03) 0px, transparent 50%);
     color: var(--text-primary);
     font-family: var(--font-inter);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    letter-spacing: -0.1px;
+    letter-spacing: -0.15px;
 }
 
 /* Custom premium scrollbar */
@@ -1497,4 +1501,262 @@ body {
     .dock-logo span, .dock-divider {
         display: none;
     }
+}
+
+/* SPA Views Layout Styles */
+.dashboard-main-container {
+    flex-grow: 1;
+    padding: 2rem 2.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: calc(100vh - 120px);
+}
+
+.dashboard-view {
+    display: none;
+    width: 100%;
+}
+
+.dashboard-view.active {
+    display: block;
+}
+
+/* Home Grid Structure */
+.home-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .home-grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.intro-welcome-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.welcome-text h2 {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 1.85rem;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.welcome-text p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.market-time-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 0.45rem 0.95rem;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+}
+
+/* News List */
+.news-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.news-item {
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem;
+}
+
+.news-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.news-tag.bull {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--green);
+}
+
+.news-tag.bear {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--red);
+}
+
+.news-time {
+    font-size: 0.68rem;
+    color: var(--card-text-secondary);
+}
+
+.news-headline {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--card-text-primary);
+    font-weight: 500;
+}
+
+/* AI suggestions inner */
+.ai-overview-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.ai-overview-alert-box {
+    background: rgba(59, 130, 246, 0.04);
+    border: 1px solid rgba(59, 130, 246, 0.12);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+}
+
+/* Chart view grid */
+.chart-view-grid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (max-width: 1100px) {
+    .chart-view-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Professional Preloader Overlay */
+.preloader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #06070a;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.preloader-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+}
+
+.preloader-icon {
+    font-size: 1.8rem;
+    color: #3b82f6;
+    animation: preloader-spin 1.5s infinite linear;
+}
+
+@keyframes preloader-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.preloader-bar {
+    width: 140px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.preloader-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+/* Obsidian Dark Card Content Overrides */
+.grid-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--card-text-primary) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+}
+
+.grid-card h2, .grid-card h3, .grid-card h4, .grid-card label, .grid-card span, .grid-card .stat-value {
+    color: var(--card-text-primary) !important;
+}
+
+.grid-card .stat-label, .grid-card .ai-label, .grid-card .tool-label, .grid-card .legend-val {
+    color: var(--card-text-secondary) !important;
+}
+
+/* Override table text colors */
+.grid-card table.dashboard-table th {
+    color: var(--card-text-secondary) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+}
+.grid-card table.dashboard-table td {
+    color: var(--card-text-primary) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+}
+
+.grid-card table.dashboard-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.grid-card .empty-row td {
+    color: var(--card-text-secondary) !important;
+}
+
+/* Input elements styling */
+.grid-card input, .grid-card select {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--card-text-primary) !important;
+}
+
+.grid-card input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Scroll padding for nav offsets */
+html {
+    scroll-behavior: smooth;
 }

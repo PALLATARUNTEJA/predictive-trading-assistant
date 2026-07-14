@@ -20,6 +20,19 @@
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="dark-mode">
+    <!-- Professional Preloader Overlay (1 second) -->
+    <div class="preloader-overlay" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">
+                <i class="fa-solid fa-wand-magic-sparkles preloader-icon"></i>
+                <h2 style="margin: 0; font-family: var(--font-outfit); font-weight: 800; font-size: 2rem; letter-spacing: 1px;">FRIDAY AI</h2>
+            </div>
+            <div class="preloader-bar">
+                <div class="preloader-bar-fill" id="preloader-fill"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Three.js 3D Background Canvas -->
     <canvas id="three-bg-canvas"></canvas>
 
@@ -47,218 +60,294 @@
         </div>
     </header>
 
-    <main class="dashboard-grid">
+    <main class="dashboard-main-container">
         
-        <!-- LEFT PANEL: Portfolio Stats & Risk Controls -->
-        <section class="grid-card stats-card glass">
-            <div class="card-header-row">
-                <h2 class="card-title"><i class="fa-solid fa-wallet"></i> Tarun Tejas Portfolio</h2>
-                <div class="portfolio-pl-badge" id="port-pl-badge">
-                    P/L: <span id="port-pl-val">$0.00 (0.00%)</span>
+        <!-- ==================== VIEW: HOME ==================== -->
+        <div class="dashboard-view active" id="view-home">
+            <div class="intro-welcome-row">
+                <div class="welcome-text">
+                    <h2>Hello, Tarun Teja</h2>
+                    <p>Welcome to Friday AI. Here is your portfolio health score, daily risk alerts feed, and real-time market narratives summary.</p>
+                </div>
+                <div class="market-time-badge">
+                    <i class="fa-solid fa-clock"></i> New York Time: <span id="lbl-market-time" style="font-weight:700;">NYSE Timezone</span>
                 </div>
             </div>
-            
-            <div class="portfolio-stats-container">
-                <div class="stat-box">
-                    <span class="stat-label">Net Asset Value</span>
-                    <span class="stat-value text-glow" id="port-total">$10,000.00</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Cash Balance</span>
-                    <span class="stat-value" id="port-cash">$10,000.00</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Holdings Value</span>
-                    <span class="stat-value" id="port-holdings">$0.00</span>
-                </div>
-                <div class="stat-box risk-slider-box">
-                    <div class="risk-slider-header">
-                        <span class="stat-label text-red">Drawdown Stop</span>
-                        <span class="risk-val-badge" id="lbl-drawdown-threshold">5.0%</span>
+
+            <div class="home-grid-layout">
+                <!-- LEFT PANEL: Portfolio Stats & Risk Controls -->
+                <section class="grid-card stats-card glass">
+                    <div class="card-header-row">
+                        <h2 class="card-title"><i class="fa-solid fa-wallet"></i> Tarun Tejas Portfolio</h2>
+                        <div class="portfolio-pl-badge" id="port-pl-badge">
+                            P/L: <span id="port-pl-val">$0.00 (0.00%)</span>
+                        </div>
                     </div>
-                    <input type="range" id="slider-drawdown" min="2" max="15" step="0.5" value="5">
-                </div>
-            </div>
-
-            <div class="portfolio-safety-status hidden" id="drawdown-warning">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>TRADING FROZEN: Daily Drawdown Threshold Breached!</span>
-            </div>
-        </section>
-
-        <!-- RIGHT PANEL: Live activity log -->
-        <section class="grid-card alert-feed-card glass">
-            <h2 class="card-title"><i class="fa-solid fa-bell"></i> Live Activity & Risk Alerts</h2>
-            <div class="alerts-list" id="alerts-container">
-                <div class="alert-item system">
-                    <span class="alert-time">Initial</span>
-                    <div class="alert-content">
-                        <strong>Paper Engine Online</strong>
-                        <p>Risk filters armed. WebSocket notifications listening for stop-loss triggers.</p>
+                    
+                    <div class="portfolio-stats-container">
+                        <div class="stat-box">
+                            <span class="stat-label">Net Asset Value</span>
+                            <span class="stat-value text-glow" id="port-total">$10,000.00</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Cash Balance</span>
+                            <span class="stat-value" id="port-cash">$10,000.00</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Holdings Value</span>
+                            <span class="stat-value" id="port-holdings">$0.00</span>
+                        </div>
+                        <div class="stat-box risk-slider-box">
+                            <div class="risk-slider-header">
+                                <span class="stat-label text-red" style="color: var(--red);">Drawdown Stop</span>
+                                <span class="risk-val-badge" id="lbl-drawdown-threshold">5.0%</span>
+                            </div>
+                            <input type="range" id="slider-drawdown" min="2" max="15" step="0.5" value="5" style="width:100%;">
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- MIDDLE LEFT PANEL: Interactive Charting with Tools -->
-        <section class="grid-card chart-card glass">
-            <div class="chart-header">
-                <div class="ticker-info">
-                    <h3 id="chart-ticker-name">AAPL</h3>
-                    <span class="badge" id="chart-ticker-trend">BULLISH</span>
-                    <span id="chart-ticker-price">$0.00</span>
-                    <span id="chart-ticker-change">+0.00%</span>
-                </div>
-                
-                <!-- Technical Chart Drawing Tools Panel -->
-                <div class="chart-tools-panel">
-                    <span class="tool-label"><i class="fa-solid fa-pencil"></i> Drawings:</span>
-                    <button class="btn btn-tool" id="btn-tool-support" title="Draw Support Level">
-                        <i class="fa-solid fa-grip-lines text-green"></i> Support
-                    </button>
-                    <button class="btn btn-tool" id="btn-tool-resistance" title="Draw Resistance Level">
-                        <i class="fa-solid fa-grip-lines text-red"></i> Resist
-                    </button>
-                    <button class="btn btn-tool btn-danger-tool" id="btn-tool-clear" title="Clear Drawn Overlays">
-                        <i class="fa-solid fa-eraser"></i> Clear
-                    </button>
-                </div>
-
-                <div class="chart-search">
-                    <input type="text" id="input-search-ticker" placeholder="Symbol (e.g. NVDA)">
-                    <button class="btn btn-primary btn-sm" id="btn-load-chart">Load</button>
-                </div>
-            </div>
-            
-            <!-- Timeframe selector and OHLC info bar -->
-            <div class="chart-toolbar">
-                <div class="timeframe-selector">
-                    <button class="btn-tf" data-interval="1m" data-period="7d">1m</button>
-                    <button class="btn-tf" data-interval="5m" data-period="60d">5m</button>
-                    <button class="btn-tf" data-interval="1h" data-period="2y">1h</button>
-                    <button class="btn-tf active" data-interval="1d" data-period="60d">1d</button>
-                    <button class="btn-tf" data-interval="1d" data-period="max">Max</button>
-                </div>
-                <div class="ohlc-legend" id="ohlc-legend">
-                    O: <span id="ohlc-o" class="legend-val">-</span> 
-                    H: <span id="ohlc-h" class="legend-val">-</span> 
-                    L: <span id="ohlc-l" class="legend-val">-</span> 
-                    C: <span id="ohlc-c" class="legend-val">-</span>
-                </div>
-            </div>
-
-            <div class="chart-container-wrapper">
-                <div id="tradingview-chart"></div>
-                <div class="chart-loading hidden" id="chart-loader">
-                    <i class="fa-solid fa-circle-notch fa-spin"></i> Fetching market data...
-                </div>
-            </div>
-        </section>
-
-        <!-- MIDDLE RIGHT PANEL: AI Predictor & Recommendations -->
-        <section class="grid-card action-card glass">
-            <h2 class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Recommendation & Orders</h2>
-            
-            <div class="ai-recommendation-box">
-                <div class="ai-badge-row">
-                    <span class="ai-label">ML Prediction (3d CLOSE):</span>
-                    <span class="ai-pred-val text-green" id="ai-prediction">UP</span>
-                </div>
-                <div class="ai-confidence-row">
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill green" id="ai-confidence-bar" style="width: 0%;"></div>
+                    <div class="portfolio-safety-status hidden" id="drawdown-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>TRADING FROZEN: Daily Drawdown Threshold Breached!</span>
                     </div>
-                    <span class="ai-confidence-val" id="ai-confidence-text">0.0% Conf.</span>
-                </div>
-                
-                <!-- Dynamic AI Stop Loss recommendations based on ATR/volatility -->
-                <div class="ai-suggestion-box" id="ai-risk-suggestion">
-                    <i class="fa-solid fa-circle-info text-cyan"></i>
-                    <span>Analysing risk profile...</span>
-                </div>
-            </div>
+                </section>
 
-            <!-- Trade Execution form -->
-            <form id="order-form" class="order-form" onsubmit="return false;">
-                <div class="form-row">
-                    <div class="form-group flex-grow">
-                        <label for="order-ticker">Symbol</label>
-                        <input type="text" id="order-ticker" readonly>
+                <!-- RIGHT PANEL: Live activity log -->
+                <section class="grid-card alert-feed-card glass">
+                    <h2 class="card-title"><i class="fa-solid fa-bell"></i> Live Risk & Safety Alerts Feed</h2>
+                    <div class="alerts-list" id="alerts-container">
+                        <div class="alert-item system">
+                            <span class="alert-time">Initial</span>
+                            <div class="alert-content">
+                                <strong>Paper Engine Online</strong>
+                                <p>Risk filters armed. WebSocket notifications listening for stop-loss triggers.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group flex-grow">
-                        <label for="order-stoploss">Stop Loss (%)</label>
-                        <input type="number" id="order-stoploss" min="1" max="90" value="20" required>
+                </section>
+
+                <!-- NEW PANEL: Latest Market News Feed -->
+                <section class="grid-card news-feed-card glass">
+                    <h2 class="card-title"><i class="fa-solid fa-newspaper text-cyan"></i> Latest Market Headlines</h2>
+                    <div class="news-list-container">
+                        <div class="news-item">
+                            <div class="news-meta">
+                                <span class="news-tag bull">Bullish</span>
+                                <span class="news-time">5m ago</span>
+                            </div>
+                            <p class="news-headline">AAPL shares surge as institutional volume indicators print strong buy signals.</p>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-meta">
+                                <span class="news-tag bear">Bearish</span>
+                                <span class="news-time">30m ago</span>
+                            </div>
+                            <p class="news-headline">RSI thresholds indicate overbought status for short-term tech charts.</p>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-meta">
+                                <span class="news-tag bull">Bullish</span>
+                                <span class="news-time">1h ago</span>
+                            </div>
+                            <p class="news-headline">MSFT and NVDA leading stock index rebound after steady rates guidance.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="order-amount">Investment Amount ($)</label>
-                    <input type="number" id="order-amount" min="10" max="10000" placeholder="Amount to buy" required>
-                </div>
-                <button class="btn btn-success" id="btn-order-buy"><i class="fa-solid fa-arrow-trend-up"></i> Execute Purchase</button>
-            </form>
+                </section>
 
-            <div class="market-narrative-container">
-                <h4><i class="fa-solid fa-robot"></i> Narrative Explainer</h4>
-                <div id="narrative-content" class="narrative-markdown">
-                    Select a stock to view structural analysis.
+                <!-- NEW PANEL: AI Suggestions & Recommendations overview -->
+                <section class="grid-card ai-overview-card glass">
+                    <h2 class="card-title"><i class="fa-solid fa-wand-magic-sparkles text-purple"></i> Friday AI Signals & Suggestions</h2>
+                    <div class="ai-overview-inner">
+                        <div class="ai-overview-alert-box">
+                            <h4 style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--text-primary);">
+                                Model Posture: <span class="badge" style="background:rgba(16, 185, 129, 0.12); color:var(--green); font-size:0.7rem; font-weight:700;">ACCUMULATION MATCHED</span>
+                            </h4>
+                            <p style="margin:0; font-size:0.75rem; line-height:1.45; color:var(--text-secondary);">
+                                My Random Forest classifier is loaded. Technical RSI parameters suggest taking cautious long positions on AAPL and NVDA with a strict 20% Stop Loss limit.
+                            </p>
+                        </div>
+                        <div style="margin-top:0.75rem;">
+                            <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:600; color:var(--text-secondary);">
+                                <span>Portfolio Risk Health Score</span>
+                                <span style="color:var(--green)">95% / Excellent</span>
+                            </div>
+                            <div class="progress-bar-bg" style="height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; margin-top:0.35rem;">
+                                <div class="progress-bar-fill green" style="width:95%; height:100%; background:var(--green);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW: CHART ==================== -->
+        <div class="dashboard-view" id="view-chart">
+            <div class="chart-view-grid">
+                <!-- MIDDLE LEFT PANEL: Interactive Charting with Tools -->
+                <section class="grid-card chart-card glass">
+                    <div class="chart-header">
+                        <div class="ticker-info">
+                            <h3 id="chart-ticker-name" style="margin:0; font-size:1.15rem; font-weight:800; font-family:var(--font-outfit);">AAPL</h3>
+                            <span class="badge" id="chart-ticker-trend">BULLISH</span>
+                            <span id="chart-ticker-price" style="font-weight:700; font-family:var(--font-outfit);">$0.00</span>
+                            <span id="chart-ticker-change">+0.00%</span>
+                        </div>
+                        
+                        <!-- Technical Chart Drawing Tools Panel -->
+                        <div class="chart-tools-panel">
+                            <span class="tool-label"><i class="fa-solid fa-pencil"></i> Drawings:</span>
+                            <button class="btn btn-tool" id="btn-tool-support" title="Draw Support Level">
+                                <i class="fa-solid fa-grip-lines text-green"></i> Support
+                            </button>
+                            <button class="btn btn-tool" id="btn-tool-resistance" title="Draw Resistance Level">
+                                <i class="fa-solid fa-grip-lines text-red"></i> Resist
+                            </button>
+                            <button class="btn btn-tool btn-danger-tool" id="btn-tool-clear" title="Clear Drawn Overlays">
+                                <i class="fa-solid fa-eraser"></i> Clear
+                            </button>
+                        </div>
+
+                        <div class="chart-search">
+                            <input type="text" id="input-search-ticker" placeholder="Symbol (e.g. NVDA)">
+                            <button class="btn btn-primary btn-sm" id="btn-load-chart">Load</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeframe selector and OHLC info bar -->
+                    <div class="chart-toolbar">
+                        <div class="timeframe-selector">
+                            <button class="btn-tf" data-interval="1m" data-period="7d">1m</button>
+                            <button class="btn-tf" data-interval="5m" data-period="60d">5m</button>
+                            <button class="btn-tf" data-interval="1h" data-period="2y">1h</button>
+                            <button class="btn-tf active" data-interval="1d" data-period="60d">1d</button>
+                            <button class="btn-tf" data-interval="1d" data-period="max">Max</button>
+                        </div>
+                        <div class="ohlc-legend" id="ohlc-legend">
+                            O: <span id="ohlc-o" class="legend-val">-</span> 
+                            H: <span id="ohlc-h" class="legend-val">-</span> 
+                            L: <span id="ohlc-l" class="legend-val">-</span> 
+                            C: <span id="ohlc-c" class="legend-val">-</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container-wrapper">
+                        <div id="tradingview-chart"></div>
+                        <div class="chart-loading hidden" id="chart-loader">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i> Fetching market data...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MIDDLE RIGHT PANEL: AI Predictor & Recommendations -->
+                <section class="grid-card action-card glass">
+                    <h2 class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Recommendation & Orders</h2>
+                    
+                    <div class="ai-recommendation-box">
+                        <div class="ai-badge-row">
+                            <span class="ai-label">ML Prediction (3d CLOSE):</span>
+                            <span class="ai-pred-val text-green" id="ai-prediction">UP</span>
+                        </div>
+                        <div class="ai-confidence-row">
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill green" id="ai-confidence-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="ai-confidence-val" id="ai-confidence-text">0.0% Conf.</span>
+                        </div>
+                        
+                        <!-- Dynamic AI Stop Loss recommendations based on ATR/volatility -->
+                        <div class="ai-suggestion-box" id="ai-risk-suggestion">
+                            <i class="fa-solid fa-circle-info text-cyan"></i>
+                            <span>Analysing risk profile...</span>
+                        </div>
+                    </div>
+
+                    <!-- Trade Execution form -->
+                    <form id="order-form" class="order-form" onsubmit="return false;">
+                        <div class="form-row">
+                            <div class="form-group flex-grow">
+                                <label for="order-ticker">Symbol</label>
+                                <input type="text" id="order-ticker" readonly>
+                            </div>
+                            <div class="form-group flex-grow">
+                                <label for="order-stoploss">Stop Loss (%)</label>
+                                <input type="number" id="order-stoploss" min="1" max="90" value="20" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-amount">Investment Amount ($)</label>
+                            <input type="number" id="order-amount" min="10" max="10000" placeholder="Amount to buy" required>
+                        </div>
+                        <button class="btn btn-success" id="btn-order-buy"><i class="fa-solid fa-arrow-trend-up"></i> Execute Purchase</button>
+                    </form>
+
+                    <div class="market-narrative-container">
+                        <h4><i class="fa-solid fa-robot"></i> Narrative Explainer</h4>
+                        <div id="narrative-content" class="narrative-markdown">
+                            Select a stock to view structural analysis.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW: HOLDINGS ==================== -->
+        <div class="dashboard-view" id="view-holdings">
+            <section class="grid-card holdings-card glass">
+                <h2 class="card-title"><i class="fa-solid fa-briefcase"></i> Active Ledger Positions</h2>
+                <div class="table-wrapper">
+                    <table class="dashboard-table" id="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Shares Owned</th>
+                                <th>Avg Entry</th>
+                                <th>Market Price</th>
+                                <th>Total Value</th>
+                                <th>Stop Loss</th>
+                                <th>Net Profit</th>
+                                <th>Exit Execution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-row">
+                                <td colspan="8">No active stock positions. Buy stocks above.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <!-- BOTTOM LEFT PANEL: Active Holdings Table (Supports Partial Selling) -->
-        <section class="grid-card holdings-card glass">
-            <h2 class="card-title"><i class="fa-solid fa-briefcase"></i> Open Positions</h2>
-            <div class="table-wrapper">
-                <table class="dashboard-table" id="holdings-table">
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Shares Owned</th>
-                            <th>Avg Entry</th>
-                            <th>Market Price</th>
-                            <th>Total Value</th>
-                            <th>Stop Loss</th>
-                            <th>Net Profit</th>
-                            <th>Exit Execution</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="empty-row">
-                            <td colspan="8">No active stock positions. Buy stocks above.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- BOTTOM RIGHT PANEL: Market Scanner -->
-        <section class="grid-card scanner-card glass">
-            <div class="scanner-header">
-                <h2 class="card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Profit Opportunity Signals</h2>
-                <button class="btn btn-secondary btn-sm" id="btn-scan-all"><i class="fa-solid fa-sync"></i> Refresh Scan</button>
-            </div>
-            <div class="table-wrapper">
-                <table class="dashboard-table" id="scanner-table">
-                    <thead>
-                        <tr>
-                            <th>Ticker</th>
-                            <th>Price</th>
-                            <th>RSI</th>
-                            <th>Trend</th>
-                            <th>Candlestick Pattern</th>
-                            <th>ML Predict</th>
-                            <th>Spikes</th>
-                            <th>Chart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="empty-row">
-                            <td colspan="8">Click Refresh Scan to check signals.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <!-- ==================== VIEW: SIGNALS ==================== -->
+        <div class="dashboard-view" id="view-signals">
+            <section class="grid-card scanner-card glass">
+                <div class="scanner-header">
+                    <h2 class="card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Profit Opportunity Signals</h2>
+                    <button class="btn btn-secondary btn-sm" id="btn-scan-all"><i class="fa-solid fa-sync"></i> Refresh Scan</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="dashboard-table" id="scanner-table">
+                        <thead>
+                            <tr>
+                                <th>Ticker</th>
+                                <th>Price</th>
+                                <th>RSI</th>
+                                <th>Trend</th>
+                                <th>Candlestick Pattern</th>
+                                <th>ML Predict</th>
+                                <th>Spikes</th>
+                                <th>Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-row">
+                                <td colspan="8">Click Refresh Scan to check signals.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
 
     </main>
 

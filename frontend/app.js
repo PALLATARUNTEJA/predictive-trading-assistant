@@ -127,19 +127,19 @@ function initChart() {
 
     chart = LightweightCharts.createChart(container, {
         layout: {
-            background: { type: 'solid', color: '#0a0d14' },
-            textColor: '#94a3b8',
+            background: { type: 'solid', color: '#0c0e12' },
+            textColor: '#8e94a5',
             fontFamily: 'Inter, sans-serif'
         },
         grid: {
-            vertLines: { color: 'rgba(255, 255, 255, 0.02)' },
-            horzLines: { color: 'rgba(255, 255, 255, 0.02)' },
+            vertLines: { color: 'rgba(255, 255, 255, 0.01)' },
+            horzLines: { color: 'rgba(255, 255, 255, 0.01)' },
         },
         rightPriceScale: {
-            borderColor: 'rgba(255, 255, 255, 0.08)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
         },
         timeScale: {
-            borderColor: 'rgba(255, 255, 255, 0.08)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
             timeVisible: true,
             secondsVisible: false,
             // Format ticks on X-axis dynamically to New York Exchange Time
@@ -766,6 +766,7 @@ async function resetAccount() {
 // Chatbot Widget Controller
 document.addEventListener("DOMContentLoaded", () => {
     // Initialize Awwwards Creative UI Elements (3D Canvas, Cursor, GSAP animations, Dock Nav)
+    try { initPreloader(); } catch (e) { console.error("Preloader Init failed:", e); }
     try { initThreeBackground(); } catch (e) { console.error("Three.js Init failed:", e); }
     try { initCustomCursor(); } catch (e) { console.error("Cursor Init failed:", e); }
     try { initAnimations(); } catch (e) { console.error("Entrance animations failed:", e); }
@@ -1043,7 +1044,33 @@ function initAnimations() {
     });
 }
 
-// 4. Floating Bottom Dock Scroll Tracking & Tab actions
+// 4. Professional Preloader (1-second animation)
+function initPreloader() {
+    const preloader = document.getElementById("preloader");
+    const fill = document.getElementById("preloader-fill");
+    if (!preloader || !fill) return;
+
+    // Fast loading progress bar simulation using GSAP
+    gsap.to(fill, {
+        width: "100%",
+        duration: 0.75,
+        ease: "power2.inOut",
+        onComplete: () => {
+            // Smoothly slide preloader up out of viewport
+            gsap.to(preloader, {
+                yPercent: -100,
+                opacity: 0,
+                duration: 0.45,
+                ease: "power2.in",
+                onComplete: () => {
+                    preloader.style.display = "none";
+                }
+            });
+        }
+    });
+}
+
+// 5. Floating Bottom Dock View Toggler & Tab actions
 function initBottomDock() {
     const dock = document.getElementById("bottom-nav-dock");
     const dockBtns = document.querySelectorAll(".dock-btn");
@@ -1052,25 +1079,47 @@ function initBottomDock() {
 
     if (!dock) return;
 
-    // Entrance animation for bottom nav capsule
+    // Entrance animation for bottom nav capsule (after preloader completes)
     gsap.from(dock, {
         opacity: 0,
         y: 50,
         duration: 0.8,
-        delay: 0.4,
+        delay: 1.1,
         ease: "power3.out"
     });
 
-    // Handle scroll triggers on tab buttons click
+    // Handle view switching
     dockBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            const targetClass = btn.getAttribute("data-target");
-            const targetEl = document.querySelector(`.${targetClass}`);
-            if (targetEl) {
+            const targetViewId = "view-" + btn.getAttribute("data-target").replace("-card", "");
+            const targetView = document.getElementById(targetViewId);
+            
+            if (targetView) {
+                // Update active button state
                 dockBtns.forEach((b) => b.classList.remove("active"));
                 btn.classList.add("active");
-                
-                targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Toggle active views
+                document.querySelectorAll(".dashboard-view").forEach((view) => {
+                    view.classList.remove("active");
+                });
+                targetView.classList.add("active");
+
+                // Animate entrance of the view
+                gsap.fromTo(targetView, 
+                    { opacity: 0, y: 15 },
+                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+                );
+
+                // Special case: If switching to chart view, trigger chart resize to prevent canvas 0px width bugs!
+                if (targetViewId === "view-chart" && chart) {
+                    setTimeout(() => {
+                        const chartContainer = document.getElementById("tradingview-chart");
+                        if (chartContainer) {
+                            chart.resize(chartContainer.clientWidth, chartContainer.clientHeight);
+                        }
+                    }, 50);
+                }
             }
         });
     });
@@ -1087,35 +1136,7 @@ function initBottomDock() {
             }
         });
     }
-
-    // Window scroll boundary sync to set active status
-    window.addEventListener("scroll", () => {
-        let currentTarget = "";
-        const mapping = [
-            { name: "stats-card", el: document.querySelector(".stats-card") },
-            { name: "chart-card", el: document.querySelector(".chart-card") },
-            { name: "holdings-card", el: document.querySelector(".holdings-card") },
-            { name: "scanner-card", el: document.querySelector(".scanner-card") }
-        ];
-
-        mapping.forEach((item) => {
-            if (item.el) {
-                const rect = item.el.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.3) {
-                    currentTarget = item.name;
-                }
-            }
-        });
-
-        if (currentTarget) {
-            dockBtns.forEach((btn) => {
-                btn.classList.remove("active");
-                if (btn.getAttribute("data-target") === currentTarget) {
-                    btn.classList.add("active");
-                }
-            });
-        }
-    });
 }
+
 
 
