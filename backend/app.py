@@ -337,6 +337,96 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket)
 
+class ChatRequest(BaseModel):
+    message: str
+    ticker: Optional[str] = "AAPL"
+
+@app.post("/api/chat")
+def chat_with_assistant(request: ChatRequest):
+    """
+    Personal Finance & Trading Assistant Bot.
+    """
+    import requests
+    message = request.message
+    ticker = request.ticker.upper()
+    msg_lower = message.lower()
+    
+    # 1. Check for portfolio-specific queries
+    if any(k in msg_lower for k in ["portfolio", "balance", "net worth", "cash", "how much money", "holdings", "profits", "p/l"]):
+        try:
+            status = get_portfolio_status()
+            return {
+                "response": f"Your **Tarun Tejas Portfolio** current stats:\n"
+                            f"• **Net Asset Value**: ${status['total_value']:.2f}\n"
+                            f"• **Cash Balance**: ${status['cash']:.2f}\n"
+                            f"• **Holdings Value**: ${status['holdings_value']:.2f}\n"
+                            f"• **Daily P/L**: ${status['total_value'] - 10000.00:+.2f} ({((status['total_value'] - 10000.00)/10000.00)*100:+.2f}%)"
+            }
+        except Exception as e:
+            return {"response": "I couldn't load your portfolio ledger stats. Please try again."}
+
+    # 2. Check for stock-specific queries (Should I buy/sell AAPL?)
+    if any(k in msg_lower for k in ["buy", "sell", "should i", "predict", "analysis", "forecast"]) and any(t in msg_lower or ticker in msg_lower for t in ["aapl", "msft", "nvda", "tsla", "meta", "googl"]):
+        # Find which ticker they are talking about
+        target_ticker = ticker
+        for t in ["AAPL", "MSFT", "NVDA", "TSLA", "META", "GOOGL"]:
+            if t.lower() in msg_lower:
+                target_ticker = t
+                break
+        try:
+            analysis = get_market_analysis(target_ticker)
+            prediction = get_prediction(target_ticker)
+            pred_label = prediction["prediction"]
+            confidence = prediction["confidence"] * 100
+            
+            return {
+                "response": f"Here is my real-time forecast for **{target_ticker}**:\n"
+                            f"• **Current Price**: ${analysis['price']:.2f} ({analysis['change']:+.2f}%)\n"
+                            f"• **Trend**: {analysis['trend']} (RSI is {analysis['rsi']:.1f})\n"
+                            f"• **ML Prediction (3d)**: Price will go **{pred_label}**\n"
+                            f"• **Model Confidence**: {confidence:.1f}%\n"
+                            f"• **My Suggestion**: " + (
+                                f"Accumulate small portions of {target_ticker} with a 15% stop loss." if pred_label == "UP" and confidence > 52 
+                                else f"Hold active positions or take partial profits."
+                            )
+            }
+        except Exception as e:
+            return {"response": f"I had trouble analyzing {target_ticker} real-time. Please make sure the stock ticker is valid."}
+
+    # 3. Fallback to free Hugging Face API for general trading or coding questions
+    try:
+        payload = {
+            "inputs": f"<|im_start|>system\nYou are a helpful personal finance and trading assistant. Keep your responses concise (2-3 sentences max).<|im_end|>\n<|im_start|>user\n{message}<|im_end|>\n<|im_start|>assistant\n",
+            "parameters": {"max_new_tokens": 150, "temperature": 0.7}
+        }
+        res = requests.post("https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct", json=payload, timeout=6)
+        if res.status_code == 200:
+            result = res.json()
+            text = result[0]["generated_text"]
+            if "assistant\n" in text:
+                text = text.split("assistant\n")[-1].strip()
+            # Clean up system instructions if leaked
+            text = text.split("<|im_end|>")[0].strip()
+            return {"response": text}
+    except Exception as e:
+        print(f"HF Inference chat API error: {e}")
+
+    # 4. Local Rule-Based Expert system (Bulletproof local NLP)
+    if "rsi" in msg_lower:
+        return {"response": "RSI (Relative Strength Index) is a momentum indicator that ranges from 0 to 100. Traditionally, values above 70 indicate a stock is overbought (likely to decline), and values below 30 indicate it is oversold (likely to rise)."}
+    elif "macd" in msg_lower:
+        return {"response": "MACD is a trend-following momentum indicator. A buy signal is triggered when the MACD line crosses above the Signal line, while a sell signal occurs when it crosses below."}
+    elif "stop loss" in msg_lower or "stoploss" in msg_lower:
+        return {"response": "A Stop Loss is an automatic trigger to sell a position once it drops below a set price. This prevents heavy losses, protecting your cash balance."}
+    elif "drawdown" in msg_lower:
+        return {"response": "Drawdown measures the decline in your net worth from its peak. Our system automatically locks buying power if daily drawdown breaches 5%."}
+    elif any(k in msg_lower for k in ["hello", "hi", "hey", "hola"]):
+        return {"response": "Hello Tarun! I am your Personal Predictive Assistant. Ask me questions like 'Should I buy AAPL?', 'What is my current portfolio value?', or explainers like 'What is MACD?'"}
+    
+    return {
+        "response": "I am currently monitoring the live stock market ticks. Ask me queries like 'What is my cash balance?', 'Analyze MSFT', or 'What does RSI mean?'"
+    }
+
 # Mount frontend static directory
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
 app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")

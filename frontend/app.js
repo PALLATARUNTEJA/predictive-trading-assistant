@@ -742,6 +742,7 @@ async function executePartialSell(ticker) {
     }
 }
 
+
 // Reset Account
 async function resetAccount() {
     if (!confirm("Reset all holdings, trade logs, and settings to defaults?")) return;
@@ -761,3 +762,104 @@ async function resetAccount() {
         alert(`Reset Error: ${e.message}`);
     }
 }
+
+// Chatbot Widget Controller
+document.addEventListener("DOMContentLoaded", () => {
+    const chatTrigger = document.getElementById("chat-trigger");
+    const chatWindow = document.getElementById("chat-window");
+    const btnCloseChat = document.getElementById("btn-close-chat");
+    const chatInput = document.getElementById("chat-user-input");
+    const btnSendChat = document.getElementById("btn-send-chat");
+
+    if (chatTrigger && chatWindow) {
+        chatTrigger.addEventListener("click", () => {
+            chatWindow.classList.toggle("hidden");
+            const pulseDot = chatTrigger.querySelector(".chat-pulse-notification");
+            if (pulseDot) pulseDot.style.display = "none";
+            
+            if (!chatWindow.classList.contains("hidden")) {
+                chatInput.focus();
+            }
+        });
+
+        btnCloseChat.addEventListener("click", () => {
+            chatWindow.classList.add("hidden");
+        });
+
+        btnSendChat.addEventListener("click", handleChatSubmit);
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") handleChatSubmit();
+        });
+    }
+});
+
+async function handleChatSubmit() {
+    const chatInput = document.getElementById("chat-user-input");
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    chatInput.value = "";
+    appendChatMessage("user", message);
+
+    const messagesArea = document.getElementById("chat-messages-area");
+    const loadingBubble = document.createElement("div");
+    loadingBubble.className = "chat-msg bot typing-indicator-bubble";
+    loadingBubble.innerHTML = `
+        <div class="msg-bubble" style="font-style: italic; color: var(--text-secondary);">
+            <i class="fa-solid fa-ellipsis fa-bounce"></i> Assistant is typing...
+        </div>
+    `;
+    messagesArea.appendChild(loadingBubble);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: message,
+                ticker: activeTicker
+            })
+        });
+
+        const data = await res.json();
+        loadingBubble.remove();
+
+        if (res.ok) {
+            appendChatMessage("bot", data.response);
+        } else {
+            appendChatMessage("bot", "Sorry, I had trouble reaching my neural models. Please check your network connection.");
+        }
+    } catch (e) {
+        loadingBubble.remove();
+        appendChatMessage("bot", "Sorry, my server is sleeping or offline. Please try again in a moment.");
+    }
+}
+
+function appendChatMessage(sender, text) {
+    const messagesArea = document.getElementById("chat-messages-area");
+    if (!messagesArea) return;
+
+    const msg = document.createElement("div");
+    msg.className = `chat-msg ${sender}`;
+
+    // Basic markdown replacement for formatting (e.g. **bold** or newlines)
+    let formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/• (.*?)/g, '• $1')
+        .replace(/\n/g, '<br>');
+
+    msg.innerHTML = `<div class="msg-bubble">${formattedText}</div>`;
+    messagesArea.appendChild(msg);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+
+// Global suggestion click helper
+window.sendSuggestion = function(text) {
+    const chatInput = document.getElementById("chat-user-input");
+    if (chatInput) {
+        chatInput.value = text;
+        handleChatSubmit();
+    }
+};
+

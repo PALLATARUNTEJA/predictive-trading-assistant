@@ -330,6 +330,42 @@
         }
     </script>
 
+    <!-- Floating Chatbot Widget Trigger -->
+    <div class="chatbot-trigger" id="chat-trigger" title="Ask Assistant">
+        <i class="fa-solid fa-robot"></i>
+        <span class="chat-pulse-notification"></span>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chatbot-window glass hidden" id="chat-window">
+        <div class="chat-window-header">
+            <div class="chat-header-info">
+                <i class="fa-solid fa-robot text-cyan"></i>
+                <div>
+                    <h4 style="margin:0; font-size:0.88rem; font-family:var(--font-outfit); font-weight:700;">AI Personal Assistant</h4>
+                    <span class="chat-status"><span class="status-dot-active"></span>Online & Portfolio-Aware</span>
+                </div>
+            </div>
+            <button class="chat-close" id="btn-close-chat">&times;</button>
+        </div>
+        <div class="chat-suggestions">
+            <span class="suggestion-chip" onclick="sendSuggestion('What is my P/L?')">What is my P/L?</span>
+            <span class="suggestion-chip" onclick="sendSuggestion('Should I buy AAPL?')">Should I buy AAPL?</span>
+            <span class="suggestion-chip" onclick="sendSuggestion('What is RSI?')">What is RSI?</span>
+        </div>
+        <div class="chat-messages" id="chat-messages-area">
+            <div class="chat-msg bot">
+                <div class="msg-bubble">
+                    Hello Tarun! I am your Personal Predictive Assistant. Ask me questions about your portfolio cash/value, stock predictions, or general market indicator terms!
+                </div>
+            </div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chat-user-input" placeholder="Type a message...">
+            <button class="btn btn-primary" id="btn-send-chat"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
