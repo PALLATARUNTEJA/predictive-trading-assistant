@@ -1,27 +1,27 @@
 :root {
-    --bg-dark: #090c15;
-    --bg-card: rgba(13, 19, 35, 0.72);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-cyan: rgba(0, 243, 255, 0.15);
-    --border-glow: rgba(0, 243, 255, 0.3);
+    --bg-dark: #07080c;
+    --bg-card: #0d0f14;
+    --border-color: rgba(255, 255, 255, 0.05);
+    --border-cyan: rgba(59, 130, 246, 0.12);
+    --border-glow: rgba(59, 130, 246, 0.25);
     
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-primary: #ffffff;
+    --text-secondary: #8e94a5;
+    --text-muted: #575e70;
     
-    --cyan: #00f3ff;
-    --blue: #38bdf8;
-    --green: #4ade80;
-    --red: #f87171;
-    --yellow: #facc15;
+    --cyan: #3b82f6;      /* Upgraded Dipa-style premium blue */
+    --blue: #8b5cf6;      /* Upgraded Dipa-style premium purple/violet */
+    --green: #10b981;     /* Upgraded emerald */
+    --red: #ef4444;       /* Ruby red */
+    --yellow: #f59e0b;    /* Amber yellow */
     
-    --font-outfit: 'Outfit', sans-serif;
+    --font-outfit: 'Plus Jakarta Sans', sans-serif;
     --font-inter: 'Inter', sans-serif;
     
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     
-    --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    --shadow-premium: 0 15px 45px rgba(0, 0, 0, 0.6);
 }
 
 /* Reset base styling */
@@ -64,17 +64,18 @@ body {
 
 /* Header style */
 .app-header {
-    background: rgba(9, 12, 21, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(7, 8, 12, 0.75);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     border-bottom: 1px solid var(--border-color);
-    padding: 0.85rem 2rem;
+    padding: 1rem 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .header-logo {
@@ -1327,4 +1328,173 @@ body {
     padding: 0.25rem 0.65rem !important;
     border-radius: 6px;
     font-size: 0.72rem;
+}
+
+/* Three.js Interactive Background Canvas */
+#three-bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+    background-color: var(--bg-dark);
+}
+
+/* Custom Cursors (GSAP Trailing) */
+.custom-cursor {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background-color: var(--cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+
+.custom-cursor-follower {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .custom-cursor, .custom-cursor-follower {
+        display: none !important;
+    }
+}
+
+/* Floating Bottom Navigation Dock (Dipa In House Style) */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 52px;
+    background: rgba(13, 15, 20, 0.85);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.25rem 0.25rem 1.25rem;
+    gap: 0.85rem;
+    z-index: 999;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dock-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.dock-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-links {
+    display: flex;
+    gap: 0.15rem;
+}
+
+.dock-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-outfit);
+    font-weight: 600;
+    font-size: 0.76rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.dock-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dock-btn.active {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dock-action-btn {
+    background: var(--cyan);
+    border: none;
+    color: #ffffff;
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.76rem;
+    padding: 0.2rem 0.2rem 0.2rem 0.85rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+    white-space: nowrap;
+}
+
+.dock-action-btn:hover {
+    background: #2563eb;
+    transform: translateY(-0.5px);
+}
+
+.dock-action-btn:active {
+    transform: scale(0.96);
+}
+
+.dock-action-circle {
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    color: #0b0f19;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dock-action-btn:hover .dock-action-circle {
+    transform: rotate(45deg);
+}
+
+@media (max-width: 600px) {
+    .bottom-nav-dock {
+        width: 90vw;
+        padding-left: 0.85rem;
+        gap: 0.5rem;
+        height: 48px;
+    }
+    .dock-logo span, .dock-divider {
+        display: none;
+    }
 }

@@ -7,15 +7,25 @@
     <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <!-- TradingView Lightweight Charts Library (v4.1.1 pinned) -->
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="dark-mode">
+    <!-- Three.js 3D Background Canvas -->
+    <canvas id="three-bg-canvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+    <div class="custom-cursor-follower" id="custom-cursor-follower"></div>
 
     <!-- Header / Navigation Bar -->
     <header class="app-header glass">
@@ -376,6 +386,26 @@
             <input type="text" id="chat-user-input" placeholder="Type a message...">
             <button class="btn btn-primary" id="btn-send-chat"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
+    </div>
+
+    <!-- Floating Bottom Navigation Dock (Dipa In House Style) -->
+    <div class="bottom-nav-dock" id="bottom-nav-dock">
+        <div class="dock-logo">
+            <i class="fa-solid fa-wand-magic-sparkles text-cyan"></i>
+            <span>Friday AI</span>
+        </div>
+        <div class="dock-divider"></div>
+        <div class="dock-links">
+            <button class="dock-btn active" data-target="stats-card">Portfolio</button>
+            <button class="dock-btn" data-target="chart-card">Chart</button>
+            <button class="dock-btn" data-target="holdings-card">Holdings</button>
+            <button class="dock-btn" data-target="scanner-card">Signals</button>
+        </div>
+        <div class="dock-divider"></div>
+        <button class="dock-action-btn" id="btn-dock-chat">
+            <span>Chat Assistant</span>
+            <span class="dock-action-circle"><i class="fa-solid fa-arrow-right"></i></span>
+        </button>
     </div>
 
     <script src="app.js"></script>

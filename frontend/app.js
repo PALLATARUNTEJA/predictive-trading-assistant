@@ -765,6 +765,12 @@ async function resetAccount() {
 
 // Chatbot Widget Controller
 document.addEventListener("DOMContentLoaded", () => {
+    // Initialize Awwwards Creative UI Elements (3D Canvas, Cursor, GSAP animations, Dock Nav)
+    try { initThreeBackground(); } catch (e) { console.error("Three.js Init failed:", e); }
+    try { initCustomCursor(); } catch (e) { console.error("Cursor Init failed:", e); }
+    try { initAnimations(); } catch (e) { console.error("Entrance animations failed:", e); }
+    try { initBottomDock(); } catch (e) { console.error("Bottom Nav Dock failed:", e); }
+
     const chatTrigger = document.getElementById("chat-trigger");
     const chatWindow = document.getElementById("chat-window");
     const btnCloseChat = document.getElementById("btn-close-chat");
@@ -886,6 +892,7 @@ function appendChatMessage(sender, text) {
     messagesArea.scrollTop = messagesArea.scrollHeight;
 }
 
+
 // Global suggestion click helper
 window.sendSuggestion = function(text) {
     const chatInput = document.getElementById("chat-user-input");
@@ -894,4 +901,221 @@ window.sendSuggestion = function(text) {
         handleChatSubmit();
     }
 };
+
+// ==========================================
+// AWARDS-WORTHY CREATIVE UI INTERACTION CODE
+// ==========================================
+
+// 1. Three.js 3D Floating Particle Network Background
+function initThreeBackground() {
+    const canvas = document.getElementById("three-bg-canvas");
+    if (!canvas) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Particle Cloud Geometry
+    const particlesCount = 200;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 10;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+    // Dipa In House Style Indigo/Blue Points
+    const material = new THREE.PointsMaterial({
+        size: 0.035,
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.35,
+        depthWrite: false
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    camera.position.z = 4;
+
+    // Interactive mouse coordinates
+    let targetX = 0;
+    let targetY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+        targetX = (e.clientX / window.innerWidth - 0.5) * 0.35;
+        targetY = (e.clientY / window.innerHeight - 0.5) * 0.35;
+    });
+
+    // Frame Renderer loop
+    const tick = () => {
+        requestAnimationFrame(tick);
+
+        // Slowly drift particles
+        particles.rotation.y += 0.0006;
+        particles.rotation.x += 0.0003;
+
+        // Smooth interactive parallax lag (GSAP style interpolation)
+        particles.rotation.y += (targetX - particles.rotation.y) * 0.05;
+        particles.rotation.x += (targetY - particles.rotation.x) * 0.05;
+
+        renderer.render(scene, camera);
+    };
+    tick();
+
+    // Re-align on screen bounds resizing
+    window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+}
+
+// 2. GSAP Trailing Custom Cursor follower
+function initCustomCursor() {
+    const cursor = document.getElementById("custom-cursor");
+    const follower = document.getElementById("custom-cursor-follower");
+    if (!cursor || !follower) return;
+
+    // Align origins
+    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+    gsap.set(follower, { xPercent: -50, yPercent: -50 });
+
+    window.addEventListener("mousemove", (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.05 });
+        gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.22, ease: "power2.out" });
+    });
+
+    // Hover scales on links, interactive buttons, or cards
+    const hoverSelectors = "a, button, input, select, .dock-btn, .dock-action-btn, .grid-card, .btn, .timeframe-selector button";
+    document.addEventListener("mouseover", (e) => {
+        if (e.target.closest(hoverSelectors)) {
+            gsap.to(cursor, { scale: 1.8, backgroundColor: "#8b5cf6", duration: 0.15 });
+            gsap.to(follower, { scale: 1.35, borderColor: "#8b5cf6", duration: 0.15 });
+        }
+    });
+
+    document.addEventListener("mouseout", (e) => {
+        if (e.target.closest(hoverSelectors)) {
+            gsap.to(cursor, { scale: 1, backgroundColor: "var(--cyan)", duration: 0.15 });
+            gsap.to(follower, { scale: 1, borderColor: "rgba(59, 130, 246, 0.4)", duration: 0.15 });
+        }
+    });
+}
+
+// 3. Staggered Entrance Animations & Card Hover elevations
+function initAnimations() {
+    // Stagger slide-up for dashboard cards
+    gsap.from(".grid-card", {
+        opacity: 0,
+        y: 20,
+        stagger: 0.06,
+        duration: 0.7,
+        ease: "power3.out"
+    });
+
+    // Elegant card lift hover actions
+    const cards = document.querySelectorAll(".grid-card");
+    cards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+            gsap.to(card, {
+                y: -5,
+                borderColor: "rgba(59, 130, 246, 0.18)",
+                boxShadow: "0 15px 45px rgba(0, 0, 0, 0.65)",
+                duration: 0.25,
+                ease: "power2.out"
+            });
+        });
+        card.addEventListener("mouseleave", () => {
+            gsap.to(card, {
+                y: 0,
+                borderColor: "var(--border-color)",
+                boxShadow: "var(--shadow-premium)",
+                duration: 0.25,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
+// 4. Floating Bottom Dock Scroll Tracking & Tab actions
+function initBottomDock() {
+    const dock = document.getElementById("bottom-nav-dock");
+    const dockBtns = document.querySelectorAll(".dock-btn");
+    const btnDockChat = document.getElementById("btn-dock-chat");
+    const chatWindow = document.getElementById("chat-window");
+
+    if (!dock) return;
+
+    // Entrance animation for bottom nav capsule
+    gsap.from(dock, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        delay: 0.4,
+        ease: "power3.out"
+    });
+
+    // Handle scroll triggers on tab buttons click
+    dockBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const targetClass = btn.getAttribute("data-target");
+            const targetEl = document.querySelector(`.${targetClass}`);
+            if (targetEl) {
+                dockBtns.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                
+                targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        });
+    });
+
+    // Connect Dipa bottom action button to toggle floating assistant
+    if (btnDockChat && chatWindow) {
+        btnDockChat.addEventListener("click", () => {
+            chatWindow.classList.toggle("hidden");
+            const pulseDot = document.querySelector("#chat-trigger .chat-pulse-notification");
+            if (pulseDot) pulseDot.style.display = "none";
+            
+            if (!chatWindow.classList.contains("hidden")) {
+                document.getElementById("chat-user-input").focus();
+            }
+        });
+    }
+
+    // Window scroll boundary sync to set active status
+    window.addEventListener("scroll", () => {
+        let currentTarget = "";
+        const mapping = [
+            { name: "stats-card", el: document.querySelector(".stats-card") },
+            { name: "chart-card", el: document.querySelector(".chart-card") },
+            { name: "holdings-card", el: document.querySelector(".holdings-card") },
+            { name: "scanner-card", el: document.querySelector(".scanner-card") }
+        ];
+
+        mapping.forEach((item) => {
+            if (item.el) {
+                const rect = item.el.getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.3) {
+                    currentTarget = item.name;
+                }
+            }
+        });
+
+        if (currentTarget) {
+            dockBtns.forEach((btn) => {
+                btn.classList.remove("active");
+                if (btn.getAttribute("data-target") === currentTarget) {
+                    btn.classList.add("active");
+                }
+            });
+        }
+    });
+}
+
 
