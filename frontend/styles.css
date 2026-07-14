@@ -1934,5 +1934,102 @@ html {
     color: #0c0e12 !important;
 }
 
+/* Force high visibility for chart controls and scanner buttons inside dark grid-cards */
+.grid-card .btn-secondary {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.grid-card .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-color: rgba(255, 255, 255, 0.26) !important;
+}
+
+.grid-card .btn-tool {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.grid-card .btn-tool i {
+    color: inherit !important;
+}
+
+.grid-card .btn-tool:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.grid-card .btn-tool.active {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Timeframe selectors inside cards */
+.grid-card .btn-tf {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #b1b7c6 !important;
+    padding: 0.3rem 0.65rem !important;
+    border-radius: 6px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.grid-card .btn-tf:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.grid-card .btn-tf.active {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+/* OHLC text legend */
+.grid-card .ohlc-legend {
+    color: #8e94a5 !important;
+    font-size: 0.78rem !important;
+}
+
+.grid-card .ohlc-legend .legend-val {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Narrative explainer text */
+.grid-card .market-narrative-container h4 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.grid-card .narrative-markdown {
+    color: #d1d7e5 !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.grid-card .narrative-markdown * {
+    color: inherit !important;
+}
+
+.grid-card .narrative-markdown strong {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Input boxes border visibility inside cards */
+.grid-card input, .grid-card select {
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+
 
 
