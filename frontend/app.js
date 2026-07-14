@@ -770,6 +770,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCloseChat = document.getElementById("btn-close-chat");
     const chatInput = document.getElementById("chat-user-input");
     const btnSendChat = document.getElementById("btn-send-chat");
+    const btnChatSettings = document.getElementById("btn-chat-settings");
+    const chatSettingsDrawer = document.getElementById("chat-settings-drawer");
+    const inputGeminiKey = document.getElementById("input-gemini-key");
+    const btnSaveChatSettings = document.getElementById("btn-save-chat-settings");
+
+    // Load saved Gemini API Key
+    if (inputGeminiKey) {
+        inputGeminiKey.value = localStorage.getItem("gemini_api_key") || "";
+    }
 
     if (chatTrigger && chatWindow) {
         chatTrigger.addEventListener("click", () => {
@@ -784,12 +793,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         btnCloseChat.addEventListener("click", () => {
             chatWindow.classList.add("hidden");
+            if (chatSettingsDrawer) chatSettingsDrawer.classList.add("hidden");
         });
 
         btnSendChat.addEventListener("click", handleChatSubmit);
         chatInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") handleChatSubmit();
         });
+
+        if (btnChatSettings && chatSettingsDrawer) {
+            btnChatSettings.addEventListener("click", (e) => {
+                e.stopPropagation();
+                chatSettingsDrawer.classList.toggle("hidden");
+            });
+        }
+
+        if (btnSaveChatSettings && inputGeminiKey && chatSettingsDrawer) {
+            btnSaveChatSettings.addEventListener("click", () => {
+                const key = inputGeminiKey.value.trim();
+                localStorage.setItem("gemini_api_key", key);
+                chatSettingsDrawer.classList.add("hidden");
+                appendChatMessage("bot", key ? "API key saved! I am now operating as your custom assistant, **Friday**." : "API key cleared. I will run in offline mode.");
+            });
+        }
     }
 });
 
@@ -813,9 +839,15 @@ async function handleChatSubmit() {
     messagesArea.scrollTop = messagesArea.scrollHeight;
 
     try {
+        const geminiKey = localStorage.getItem("gemini_api_key") || "";
+        const headers = { "Content-Type": "application/json" };
+        if (geminiKey) {
+            headers["X-Gemini-Key"] = geminiKey;
+        }
+
         const res = await fetch(`${API_BASE}/api/chat`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: headers,
             body: JSON.stringify({
                 message: message,
                 ticker: activeTicker

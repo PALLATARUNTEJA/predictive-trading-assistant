@@ -341,15 +341,40 @@ class ChatRequest(BaseModel):
     message: str
     ticker: Optional[str] = "AAPL"
 
+from fastapi import Header
+
 @app.post("/api/chat")
-def chat_with_assistant(request: ChatRequest):
+def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Header(None)):
     """
-    Personal Finance & Trading Assistant Bot.
+    Personal Finance & Trading Assistant Bot (Friday).
     """
     import requests
     message = request.message
     ticker = request.ticker.upper()
     msg_lower = message.lower()
+
+    # 0. Check if user provided their own free Gemini API Key
+    if x_gemini_key:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={x_gemini_key}"
+            prompt = (
+                f"You are Friday, a smart personal finance and stock trading AI chatbot assistant for Tarun. "
+                f"Answer the user's question: '{message}' in a highly professional, conversational tone. "
+                f"Keep your response concise (2-3 sentences max) and format it beautifully with standard Markdown."
+            )
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}]
+            }
+            res = requests.post(url, json=payload, timeout=6)
+            if res.status_code == 200:
+                data = res.json()
+                text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                return {"response": text}
+            else:
+                print(f"Gemini API error status {res.status_code}: {res.text}")
+        except Exception as e:
+            print(f"Gemini query error: {e}")
+
     
     # 1. Check for portfolio-specific queries
     if any(k in msg_lower for k in ["portfolio", "balance", "net worth", "cash", "how much money", "holdings", "profits", "p/l"]):

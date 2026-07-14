@@ -346,7 +346,19 @@
                     <span class="chat-status"><span class="status-dot-active"></span>Online & Portfolio-Aware</span>
                 </div>
             </div>
-            <button class="chat-close" id="btn-close-chat">&times;</button>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <button class="chat-close" id="btn-chat-settings" title="AI Settings" style="font-size: 0.9rem; display: inline-flex; align-items: center;"><i class="fa-solid fa-gear"></i></button>
+                <button class="chat-close" id="btn-close-chat">&times;</button>
+            </div>
+        </div>
+
+        <!-- Chat Settings Drawer -->
+        <div class="chat-settings-drawer hidden" id="chat-settings-drawer">
+            <label for="input-gemini-key">Free Gemini API Key (<a href="https://aistudio.google.com/" target="_blank" style="color:var(--cyan); text-decoration:underline;">Get Key</a>):</label>
+            <div class="settings-input-row">
+                <input type="password" id="input-gemini-key" placeholder="AIzaSy...">
+                <button class="btn btn-primary btn-sm" id="btn-save-chat-settings">Save</button>
+            </div>
         </div>
         <div class="chat-suggestions">
             <span class="suggestion-chip" onclick="sendSuggestion('What is my P/L?')">What is my P/L?</span>

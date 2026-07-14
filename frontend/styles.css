@@ -1284,3 +1284,47 @@ body {
     padding: 0.5rem 0.85rem !important;
     border-radius: 8px;
 }
+
+/* Chat settings drawer */
+.chat-settings-drawer {
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    animation: slide-down-drawer 0.2s ease-out;
+}
+
+@keyframes slide-down-drawer {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.chat-settings-drawer label {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.settings-input-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.settings-input-row input {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px;
+    padding: 0.25rem 0.55rem !important;
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    outline: none;
+    flex-grow: 1;
+}
+
+.settings-input-row button {
+    padding: 0.25rem 0.65rem !important;
+    border-radius: 6px;
+    font-size: 0.72rem;
+}
