@@ -253,11 +253,16 @@ function initChart() {
         document.getElementById("ohlc-c").innerText = c;
     });
 
-    window.addEventListener("resize", () => {
-        if (chart) {
-            chart.resize(container.clientWidth, container.clientHeight);
+    // Use a ResizeObserver to handle fluid, instant chart resizing under layout/grid shifts
+    const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+            const { width, height } = entry.contentRect;
+            if (chart && width > 0 && height > 0) {
+                chart.resize(width, height);
+            }
         }
     });
+    resizeObserver.observe(container);
 }
 
 // Initialize WebSockets
