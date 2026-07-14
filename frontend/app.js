@@ -1,4 +1,4 @@
-const API_BASE = (window.location.protocol === "file:") ? "http://127.0.0.1:8000" : window.location.origin;
+const API_BASE = (window.location.protocol === "file:") ? "http://127.0.0.1:8000" : "https://predictive-trading-assistant.onrender.com";
 let activeTicker = "AAPL";
 let activeInterval = "1d";
 let activePeriod = "60d";
