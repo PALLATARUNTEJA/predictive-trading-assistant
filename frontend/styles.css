@@ -2037,6 +2037,174 @@ html {
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
+/* ==========================================================================
+   MOBILE & VIEWPORT RESPONSIVENESS OVERRIDES
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    .dashboard-main-container {
+        padding: 1.5rem 1.25rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-main-container {
+        padding: 1rem 0.75rem !important; /* Shrink padding so card width matches mobile screen */
+        min-height: calc(100vh - 140px);
+    }
+    
+    .grid-card {
+        padding: 1.25rem !important;
+        border-radius: 16px !important;
+    }
+
+    .home-grid-layout, .chart-view-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Main container bounds */
+    .dashboard-main-container {
+        padding: 0.75rem 0.5rem !important;
+    }
+
+    /* Stack app header elements cleanly */
+    .app-header {
+        padding: 0.6rem 0.75rem !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+        align-items: center !important;
+    }
+    
+    .header-logo h1 {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+    }
+
+    .header-actions {
+        width: 100% !important;
+        justify-content: center !important;
+        gap: 0.35rem !important;
+    }
+
+    .status-indicator {
+        font-size: 0.68rem !important;
+        padding: 0.3rem 0.5rem !important;
+    }
+
+    .header-actions button {
+        font-size: 0.68rem !important;
+        padding: 0.3rem 0.55rem !important;
+    }
+
+    /* Stack welcome banner elements */
+    .intro-welcome-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+        padding-bottom: 0.85rem !important;
+    }
+
+    .welcome-text h2 {
+        font-size: 1.35rem !important;
+    }
+
+    .market-time-badge {
+        align-self: stretch !important;
+        justify-content: center !important;
+        font-size: 0.72rem !important;
+        padding: 0.35rem 0.75rem !important;
+    }
+
+    /* Prevent table columns text wrapping to force clean responsive scrollbar */
+    .dashboard-table th, .dashboard-table td {
+        white-space: nowrap !important;
+        padding: 0.55rem 0.65rem !important;
+    }
+
+    /* Compact floating bottom menu bar so it fits perfectly on mobile */
+    .bottom-nav-dock {
+        width: 95vw !important;
+        bottom: 12px !important;
+        padding: 0.2rem 0.35rem 0.2rem 0.65rem !important;
+        gap: 0.35rem !important;
+        justify-content: space-between !important;
+        height: 48px !important;
+    }
+
+    .bottom-nav-dock .dock-logo,
+    .bottom-nav-dock .dock-divider {
+        display: none !important; /* Hide logo & dividers to make space */
+    }
+
+    .bottom-nav-dock .dock-links {
+        display: flex !important;
+        gap: 0.2rem !important;
+        flex-grow: 1 !important;
+        justify-content: space-around !important;
+    }
+
+    .bottom-nav-dock .dock-btn {
+        font-size: 0.74rem !important;
+        padding: 0.35rem 0.5rem !important;
+    }
+
+    /* Collapse Chat Assistant button to a round purple circle containing only the robot icon */
+    .bottom-nav-dock .dock-action-btn {
+        padding: 0 !important;
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 50% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-width: unset !important;
+    }
+
+    .bottom-nav-dock .dock-action-btn span {
+        display: none !important; /* Hide labels */
+    }
+
+    .bottom-nav-dock .dock-action-btn i {
+        font-size: 0.95rem !important;
+        margin: 0 !important;
+    }
+
+    .bottom-nav-dock .dock-action-circle {
+        display: none !important; /* Hide extra circle inner */
+    }
+
+    /* Chart controls responsive adjustments */
+    .chart-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.65rem !important;
+    }
+
+    .chart-tools-panel {
+        justify-content: space-between !important;
+    }
+
+    .chart-search {
+        width: 100% !important;
+    }
+    
+    .chart-search input {
+        flex-grow: 1 !important;
+    }
+
+    /* Holdings partial sell group layout */
+    .sell-input-group {
+        flex-direction: row !important;
+        width: auto !important;
+    }
+    
+    .sell-qty-input {
+        width: 65px !important;
+    }
+}
+
 
 
 
