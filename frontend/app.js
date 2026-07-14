@@ -1097,7 +1097,7 @@ function initBottomDock() {
     // Handle view switching
     dockBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            const targetViewId = "view-" + btn.getAttribute("data-target").replace("-card", "");
+            const targetViewId = "view-" + btn.getAttribute("data-target");
             const targetView = document.getElementById(targetViewId);
             
             if (targetView) {

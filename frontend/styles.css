@@ -1882,17 +1882,26 @@ html {
 }
 
 /* Bottom Nav Dock Specific Color Overrides (since dock is dark-themed) */
+.bottom-nav-dock {
+    background: rgba(12, 14, 18, 0.92) !important; /* Matches obsidian card color #0c0e12 */
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+}
+
 .bottom-nav-dock, .bottom-nav-dock * {
     color: #ffffff !important;
 }
 
 .bottom-nav-dock .dock-logo span {
     color: #ffffff !important;
+    font-weight: 800 !important;
 }
 
 .bottom-nav-dock .dock-btn {
-    color: #a1a8ba !important;
+    color: #c1c7d6 !important; /* Brighter slate-grey for high visibility */
     background: transparent !important;
+    font-size: 0.85rem !important; /* Increased from 0.76rem */
+    font-weight: 700 !important; /* Increased from 600 */
+    padding: 0.4rem 0.85rem !important;
 }
 
 .bottom-nav-dock .dock-btn:hover {
@@ -1901,14 +1910,19 @@ html {
 }
 
 .bottom-nav-dock .dock-btn.active {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.09) !important;
     color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 
 .bottom-nav-dock .dock-action-btn {
     background: var(--blue) !important;
     color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
 }
 
 .bottom-nav-dock .dock-action-btn:hover {
@@ -1919,5 +1933,6 @@ html {
     background: #ffffff !important;
     color: #0c0e12 !important;
 }
+
 
 
