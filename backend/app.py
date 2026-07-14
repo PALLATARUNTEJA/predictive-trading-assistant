@@ -445,7 +445,16 @@ def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Head
         return {"response": "A Stop Loss is an automatic trigger to sell a position once it drops below a set price. This prevents heavy losses, protecting your cash balance."}
     elif "drawdown" in msg_lower:
         return {"response": "Drawdown measures the decline in your net worth from its peak. Our system automatically locks buying power if daily drawdown breaches 5%."}
-    elif any(k in msg_lower for k in ["hello", "hi", "hey", "hola"]):
+    elif "history" in msg_lower:
+        target_ticker = ticker
+        for t in ["AAPL", "MSFT", "NVDA", "TSLA", "META", "GOOGL"]:
+            if t.lower() in msg_lower:
+                target_ticker = t
+                break
+        return {"response": f"You can view the entire historical price timeline of **{target_ticker}** (from company IPO to today) directly on the chart by loading the symbol and clicking the **'Max'** timeframe tab above the chart workspace!"}
+    
+    # Tokenize words to prevent substring matches (e.g., 'hi' matches in 'history')
+    elif any(k in msg_lower.split() for k in ["hello", "hi", "hey", "hola"]):
         return {"response": "Hello Tarun! I am your Personal Predictive Assistant. Ask me questions like 'Should I buy AAPL?', 'What is my current portfolio value?', or explainers like 'What is MACD?'"}
     
     return {
