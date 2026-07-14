@@ -62,7 +62,7 @@ def train_model(tickers: list = None) -> dict:
     """
     if not tickers:
         # Default representative stocks
-        tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "JPM", "V", "DIS"]
+        tickers = ["AAPL", "MSFT", "NVDA"]
 
     all_X = []
     all_y = []

@@ -18,7 +18,7 @@ try:
     print("\nTesting Machine Learning model training pipeline (model.py)...")
     from backend.model import train_model, get_prediction
     # Train model on a small set of tickers to verify scikit-learn works
-    train_res = train_model(["AAPL", "MSFT"])
+    train_res = train_model(["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL"])
     print(f"Training status: {train_res}")
     
     print("\nTesting Machine Learning inference/prediction...")
