@@ -1881,3 +1881,43 @@ html {
     border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
+/* Bottom Nav Dock Specific Color Overrides (since dock is dark-themed) */
+.bottom-nav-dock, .bottom-nav-dock * {
+    color: #ffffff !important;
+}
+
+.bottom-nav-dock .dock-logo span {
+    color: #ffffff !important;
+}
+
+.bottom-nav-dock .dock-btn {
+    color: #a1a8ba !important;
+    background: transparent !important;
+}
+
+.bottom-nav-dock .dock-btn:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.bottom-nav-dock .dock-btn.active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.bottom-nav-dock .dock-action-btn {
+    background: var(--blue) !important;
+    color: #ffffff !important;
+}
+
+.bottom-nav-dock .dock-action-btn:hover {
+    background: #7c3aed !important;
+}
+
+.bottom-nav-dock .dock-action-circle {
+    background: #ffffff !important;
+    color: #0c0e12 !important;
+}
+
+
