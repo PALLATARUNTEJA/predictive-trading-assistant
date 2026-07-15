@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friday AI - Comprehensive Developer Book & Handbook</title>
+    <title>Friday AI - The Comprehensive Quantitative & Architectural Reference E-Book</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -281,6 +281,18 @@
             color: #581c87;
         }
 
+        .callout-info {
+            background-color: #eff6ff;
+            border-left-color: var(--primary);
+            color: #1e3a8a;
+        }
+
+        .callout-complexity {
+            background-color: #faf5ff;
+            border-left-color: var(--accent);
+            color: #581c87;
+        }
+
         .callout-interview {
             background-color: #fffbeb;
             border-left-color: var(--warning);
@@ -471,7 +483,7 @@
             <h2 class="toc-title">Table of Contents</h2>
             <ul class="toc-list">
                 <li class="toc-item">
-                    <a href="#ch1" class="toc-link">Chapter 1: The Core System Concept & Flow Explained for Beginners</a>
+                    <a href="#ch1" class="toc-link">Chapter 1: Core System Concept & Flow Explained for Beginners</a>
                     <span class="toc-dots"></span>
                     <span class="toc-page">03</span>
                 </li>
@@ -481,24 +493,34 @@
                     <span class="toc-page">07</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch3" class="toc-link">Chapter 3: Deep-Dive into Core Logic & Algorithms</a>
+                    <a href="#ch3" class="toc-link">Chapter 3: Line-by-Line Code Breakdown of frontend/app.js</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">25</span>
+                    <span class="toc-page">19</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch4" class="toc-link">Chapter 4: Libraries & Frameworks Reference Guides</a>
+                    <a href="#ch4" class="toc-link">Chapter 4: Advanced Quantitative Trading Math & Metrics</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">30</span>
+                    <span class="toc-page">31</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch5" class="toc-link">Chapter 5: 50+ Comprehensive Interview Questions & Answers</a>
+                    <a href="#ch5" class="toc-link">Chapter 5: Enterprise Scaling Microservices & Infrastructure</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">34</span>
+                    <span class="toc-page">36</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch6" class="toc-link">Chapter 6: Evolution, Challenges & Engineering Journey</a>
+                    <a href="#ch6" class="toc-link">Chapter 6: Cyber Security, Rate Limiting & Auth Protocols</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">52</span>
+                    <span class="toc-page">41</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch7" class="toc-link">Chapter 7: 50+ Comprehensive Interview Questions & Answers</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">45</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch8" class="toc-link">Chapter 8: Evolutionary Timeline & Technical Challenges</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">65</span>
                 </li>
             </ul>
         </div>
@@ -507,10 +529,10 @@
         <div class="chapter-container" id="ch1">
             <div class="chapter-header">
                 <div class="chapter-num">Chapter 1</div>
-                <h1 class="chapter-title">The Core System Concept & Flow Explained for Beginners</h1>
+                <h1 class="chapter-title">Core System Concept & Flow Explained for Beginners</h1>
             </div>
             
-            <p>Welcome to the developer guide for **Friday AI**! If you are a 10th-grade student or a beginner who only knows basic coding syntax, this chapter is written specifically for you. We will use simple analogies to explain exactly what Friday AI does and how it functions under the hood.</p>
+            <p>Welcome to the developer reference guide for **Friday AI**! If you are a 10th-grade student or a beginner who only knows basic coding syntax, this chapter is written specifically for you. We will use simple analogies to explain exactly what Friday AI does and how it functions under the hood.</p>
 
             <h2>1. The Restaurant Analogy of APIs</h2>
             <p>Imagine you walk into a restaurant. You are the **Client** (the browser window). The kitchen is the **Database & Python Code** (where the food is prepared). You cannot go directly into the kitchen to grab food. Instead, you look at a menu and tell the waiter what you want. The waiter is the **API (Application Programming Interface)**.</p>
@@ -771,136 +793,266 @@ async def buy(request: BuyRequest):
     return result</code></pre>
 
             <p>When the user clicks "Execute Purchase", this POST endpoint triggers. It fetches the latest candle closing price from yFinance. It then passes the data to <code>buy_stock()</code> which verifies if the portfolio has enough cash and that trading is not frozen. If approved, it subtracts the cash, allocates the fractional shares, registers the entry price and stop loss limits, logs the trade, broadcasts a green success notification over WebSockets, and returns the result.</p>
-
-            <h3>Section 8: Chatbot Assistant Endpoint (Lines 340–463)</h3>
-            <pre><code>@app.post("/api/chat")
-def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Header(None)):
-    message = request.message
-    ticker = request.ticker.upper()
-    msg_lower = message.lower()
-
-    # 0. User Gemini API Key Router
-    if x_gemini_key:
-        try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={x_gemini_key}"
-            prompt = (
-                f"You are Friday, a smart personal finance and stock trading AI chatbot assistant for Tarun. "
-                f"Answer the user's question: '{message}' in a highly professional, conversational tone. "
-                f"Keep your response concise (2-3 sentences max) and format it beautifully with standard Markdown."
-            )
-            payload = {"contents": [{"parts": [{"text": prompt}]}]}
-            res = requests.post(url, json=payload, timeout=6)
-            if res.status_code == 200:
-                text = res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-                return {"response": text}
-        except Exception:
-            pass
-
-    # 1. Local Portfolio Queries Router
-    if any(k in msg_lower for k in ["portfolio", "balance", "net worth", "cash", "holdings", "profits"]):
-        status = get_portfolio_status()
-        return {
-            "response": f"Your **Tarun Tejas Portfolio** current stats:\n"
-                        f"• **Net Asset Value**: ${status['total_value']:.2f}\n"
-                        f"• **Cash Balance**: ${status['cash']:.2f}\n"
-                        f"• **Holdings Value**: ${status['holdings_value']:.2f}"
-        }
-
-    # 2. Local Stock Forecast Queries Router
-    if any(k in msg_lower for k in ["buy", "sell", "predict", "analysis"]) and any(t in msg_lower or ticker in msg_lower for t in ["aapl", "msft", "nvda", "tsla", "meta", "googl"]):
-        # Fetch indicators and prediction
-        analysis = get_market_analysis(ticker)
-        prediction = get_prediction(ticker)
-        return {
-            "response": f"Real-time forecast for **{ticker}**:\n"
-                        f"• **Price**: ${analysis['price']:.2f} ({analysis['change']:+.2f}%)\n"
-                        f"• **ML Prediction (3d)**: Price will go **{prediction['prediction']}**\n"
-                        f"• **Confidence**: {prediction['confidence']*100:.1f}%"
-        }
-
-    # 3. Fallback to free serverless LLM (Qwen API)
-    try:
-        payload = {
-            "inputs": f"<|im_start|>system\nYou are a helpful personal finance assistant.<|im_end|>\n<|im_start|>user\n{message}<|im_end|>\n<|im_start|>assistant\n",
-        }
-        res = requests.post("https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct", json=payload, timeout=6)
-        if res.status_code == 200:
-            text = res.json()[0]["generated_text"].split("assistant\n")[-1].strip()
-            return {"response": text.split("<|im_end|>")[0].strip()}
-    except Exception:
-        pass
-
-    # 4. Expert system tokenized fallback
-    if "rsi" in msg_lower:
-        return {"response": "RSI (Relative Strength Index) is a momentum indicator that ranges from 0 to 100. Traditionally, values above 70 indicate a stock is overbought (likely to decline), and values below 30 indicate it is oversold (likely to rise)."}
-    return {"response": "I am currently monitoring the live stock market ticks. Ask me queries like 'What is my cash balance?', 'Analyze MSFT', or 'What does RSI mean?'"}</code></pre>
-
-            <p>This endpoint manages your conversational assistant, Friday. It uses a tiered router to answer user queries:
-            <ol>
-                <li><strong>Gemini Key</strong>: If the user provides a free Google Gemini key in local storage, it sends requests directly to the Gemini API.</li>
-                <li><strong>Local Context API</strong>: If the user asks about their portfolio balance, holdings, or stock predictions, Friday bypasses external LLMs and reads the local database, providing exact calculations.</li>
-                <li><strong>Free Serverless Qwen API</strong>: If it is a general finance or coding question, it routes to a free Qwen 7B Instruct endpoint on Hugging Face.</li>
-                <li><strong>Expert Rules</strong>: If the network drops, a tokenized regex matches terms (like "RSI" or "MACD") to return structured, built-in definitions.</li>
-            </ol>
-            </p>
         </div>
 
         <!-- Chapter 3 -->
         <div class="chapter-container" id="ch3">
             <div class="chapter-header">
                 <div class="chapter-num">Chapter 3</div>
-                <h1 class="chapter-title">Deep-Dive into Core Logic & Algorithms</h1>
+                <h1 class="chapter-title">Line-by-Line Code Breakdown of frontend/app.js</h1>
             </div>
 
-            <h2>1. Random Forest Machine Learning Classification</h2>
-            <p>A **Random Forest** is an ensemble classifier. Instead of using a single Decision Tree (which easily overfits and makes poor choices), it creates a "forest" of multiple independent trees (default is 100). Each tree is trained on a random subset of historical candlestick data and features.</p>
-            <p>When predicting direction:
-            <ol>
-                <li>Each tree votes on whether the stock will go <code>UP</code> or <code>DOWN</code>.</li>
-                <li>The system gathers all votes. If 75 trees vote <code>UP</code>, the prediction is <code>UP</code> with a confidence of 75%.</li>
-            </ol>
-            This bagging technique ensures the model is robust against stock price volatility.</p>
+            <p>In this chapter, we deep-dive into the browser's javascript command execution loop in <code>frontend/app.js</code>, explaining what every block does.</p>
 
-            <h2>2. Technical Indicator Mathematics</h2>
-            <h3>Relative Strength Index (RSI)</h3>
-            <p>RSI measures price speed and change momentum over a 14-day window:
-            \[RSI = 100 - \left( \frac{100}{1 + RS} \right)\]
-            Where \(RS\) is the ratio of average upward price gains to average downward losses over the 14-period window:
-            \[RS = \frac{\text{Average Gain}}{\text{Average Loss}}\]
-            RSI values above **70** indicate the stock is overbought (too hot), while values below **30** indicate it is oversold (cheap/undervalued).</p>
+            <h3>Section 1: Configuration & Global States (Lines 1–15)</h3>
+            <pre><code>const API_BASE = (window.location.protocol === "file:") ? "http://127.0.0.1:8000" : "https://predictive-trading-assistant.onrender.com";
+let activeTicker = "AAPL";
+let activeInterval = "1d";
+let activePeriod = "60d";
+let chart = null;
+let candleSeries = null;
+let socket = null;</code></pre>
 
-            <h3>Moving Average Convergence Divergence (MACD)</h3>
-            <p>MACD tracks the relationship between two Exponential Moving Averages (EMA):
-            \[\text{MACD Line} = \text{EMA}_{12}(\text{Close}) - \text{EMA}_{26}(\text{Close})\]
-            \[\text{Signal Line} = \text{EMA}_{9}(\text{MACD Line})\]
-            When the MACD line crosses above the Signal line, it indicates accelerating upward momentum (a bullish buy trigger). When it crosses below, it indicates downward momentum (a bearish exit trigger).</p>
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Variable / Logic</th>
+                        <th>Explanation for Beginners</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>API_BASE</code></td>
+                        <td>Detects if the file is run locally from your computer (<code>file:</code>) or from a website. Sets the correct URL destination for API calls automatically.</td>
+                    </tr>
+                    <tr>
+                        <td><code>activeTicker = "AAPL"</code></td>
+                        <td>Stores the stock symbol that is currently being drawn on the screen (defaults to Apple).</td>
+                    </tr>
+                    <tr>
+                        <td><code>chart, candleSeries</code></td>
+                        <td>Global placeholders to save references to our TradingView Lightweight Charts canvas elements so we can update them when a user searches for a stock.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Section 2: DOM Initialization & Event Binding (Lines 18–112)</h3>
+            <pre><code>document.addEventListener("DOMContentLoaded", () => {
+    initChart();
+    initWebSocket();
+    refreshPortfolio();
+    loadTickerData(activeTicker);
+    scanMarket();
+
+    document.getElementById("btn-load-chart").addEventListener("click", () => {
+        const input = document.getElementById("input-search-ticker").value.trim().toUpperCase();
+        if (input) loadTickerData(input);
+    });
+
+    document.getElementById("btn-order-buy").addEventListener("click", executeBuy);
+});</code></pre>
+
+            <p>When the HTML structure finishes loading in the browser, <code>DOMContentLoaded</code> triggers. It calls functions to initialize the chart grid, start the WebSocket walkie-talkie, load Apple stock data, and populate the dashboard. Next, it attaches click event listeners to buttons like the Search button and the Buy execution button, mapping clicks to Javascript handlers.</p>
+
+            <h3>Section 3: TradingView Chart Layout & Tooltips (Lines 124–266)</h3>
+            <pre><code>function initChart() {
+    const container = document.getElementById("tradingview-chart");
+    container.innerHTML = "";
+
+    chart = LightweightCharts.createChart(container, {
+        layout: {
+            background: { type: 'solid', color: '#0c0e12' },
+            textColor: '#8e94a5',
+            fontFamily: 'Inter, sans-serif'
+        },
+        timeScale: {
+            timeVisible: true,
+            tickMarkFormatter: (time) => { ... }
+        }
+    });
+
+    candleSeries = chart.addCandlestickSeries({ upColor: '#4ade80', downColor: '#f87171' });
+}</code></pre>
+
+            <p>This function targets the DOM container <code>#tradingview-chart</code>, empties its contents, and instantiates a new <code>LightweightCharts</code> canvas object. It configures the background color, grid lines, and X-axis timestamps to format sessions according to the **New York Stock Exchange Timezone (EST)**. It then appends three distinct datasets: Candlesticks (green for rise, red for fall), SMA 20 (blue line), and SMA 50 (indigo line).</p>
+
+            <h3>Section 4: WebSocket Client Connection (Lines 268–299)</h3>
+            <pre><code>function initWebSocket() {
+    const wsUrl = `${wsProtocol}//${wsHost}/ws`;
+    socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+        document.getElementById("ws-status-dot").className = "pulse-dot green";
+        document.getElementById("ws-status-text").innerText = "Live Connected";
+    };
+
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        handleLiveNotification(data);
+    };
+}</code></pre>
+
+            <p>The client instantiates a standard browser <code>WebSocket</code> object targeting the backend connection address.
+            <ul>
+                <li>When the handshake completes, <code>onopen</code> transitions the status dot in the header to green and writes "Live Connected".</li>
+                <li>When an alert is pushed from the server, <code>onmessage</code> parses the packet and forwards the alert JSON to the notification drawer.</li>
+                <li>If connection drops, the client automatically sleeps for 3 seconds and tries to connect again, ensuring resilience.</li>
+            </ul>
+            </p>
         </div>
 
         <!-- Chapter 4 -->
         <div class="chapter-container" id="ch4">
             <div class="chapter-header">
                 <div class="chapter-num">Chapter 4</div>
-                <h1 class="chapter-title">Libraries & Frameworks Reference Guides</h1>
+                <h1 class="chapter-title">Advanced Quantitative Trading Math & Metrics</h1>
             </div>
 
-            <p>This chapter serves as a reference guide explaining the role of each library implemented in Friday AI:</p>
+            <p>This chapter documents the mathematical formulas and quant methods used to measure risk, reward, and position sizing allocations inside advanced trading assistants.</p>
 
+            <h2>1. Sharpe Ratio</h2>
+            <p>The **Sharpe Ratio** measures the excess return per unit of deviation in an investment asset or portfolio strategy:</p>
+            \[S_p = \frac{E[R_p - R_f]}{\sigma_p}\]
+            <p>Where:
             <ul>
-                <li><strong>FastAPI</strong>: A modern, high-performance web framework for building APIs in Python. It handles our HTTP routes, JSON serialization, and WebSocket connections.</li>
-                <li><strong>Uvicorn</strong>: An ASGI web server implementation for Python. It executes the FastAPI app, listening for web requests on port 8000.</li>
-                <li><strong>Scikit-Learn</strong>: A comprehensive data science library. Used to train the Random Forest estimator and run predictions.</li>
-                <li><strong>Joblib</strong>: Provides lightweight pipelining and serialization. Used to save our trained model binary locally and load it into memory on the Render server in under 0.1 seconds.</li>
-                <li><strong>yFinance</strong>: A Python wrapper that pulls historical market data and real-time intraday ticks directly from the Yahoo Finance database.</li>
-                <li><strong>Lightweight Charts</strong>: TradingView's open-source canvas library. Used to render smooth candlestick charts on the frontend.</li>
-                <li><strong>Three.js</strong>: A lightweight 3D library used to render particle animations in a WebGL canvas.</li>
-                <li><strong>GSAP (GreenSock Animation Platform)</strong>: A high-performance animation library. Used to animate cursor trailing, tab view transitions, and dock slide entrances.</li>
+                <li>\(R_p\) is the asset or portfolio return rate.</li>
+                <li>\(R_f\) is the risk-free return rate (e.g., U.S. Treasury Bond yields).</li>
+                <li>\(\sigma_p\) is the standard deviation (volatility) of the portfolio's excess returns.</li>
             </ul>
+            A Sharpe ratio above **1.0** is considered good, above **2.0** is very good, and above **3.0** is excellent, indicating high returns relative to risk.</p>
+
+            <h2>2. Sortino Ratio</h2>
+            <p>Unlike the Sharpe Ratio, which penalizes both upward volatility (gains) and downward volatility (losses), the **Sortino Ratio** only penalizes downward price deviations (losses), which is a more realistic measure of downside risk:</p>
+            \[S = \frac{R_p - R_f}{\sigma_d}\]
+            <p>Where \(\sigma_d\) is the standard deviation of negative asset returns (downside deviation).</p>
+
+            <h2>3. Kelly Criterion Formula</h2>
+            <p>To determine optimal position sizing (how much capital to risk on a single trade), quantitative traders use the **Kelly Criterion** equation:</p>
+            \[f^* = \frac{bp - q}{b}\]
+            <p>Where:
+            <ul>
+                <li>\(f^*\) is the fraction of current portfolio cash to allocate to the trade.</li>
+                <li>\(b\) is the decimal odds received on the trade (e.g. win payout divided by loss payout).</li>
+                <li>\(p\) is the probability of winning (our Random Forest model confidence score).</li>
+                <li>\(q\) is the probability of losing (\(1 - p\)).</li>
+            </ul>
+            If the model predicts a trade with 70% confidence (\(p = 0.7\)) and a 1:1 risk-to-reward ratio (\(b = 1\)), the Kelly fraction is:
+            \[f^* = \frac{(1 \times 0.7) - 0.3}{1} = 0.40 \text{ or } 40\%\]
+            To avoid overall volatility, most risk managers apply a **Fractional Kelly** strategy, risking only half or a quarter of the calculated Kelly amount (e.g., 10%).</p>
         </div>
 
         <!-- Chapter 5 -->
         <div class="chapter-container" id="ch5">
             <div class="chapter-header">
                 <div class="chapter-num">Chapter 5</div>
+                <h1 class="chapter-title">Enterprise Scaling Microservices & Infrastructure</h1>
+            </div>
+
+            <p>To scale Friday AI to thousands of concurrent users in production, the architecture must transition from a single serverless server to a distributed, containerized microservices infrastructure.</p>
+
+            <h2>1. Production Topology Flow</h2>
+            <p>In an enterprise setup, requests are balanced across multiple instances of our FastAPI application containerized inside Docker and managed by a Kubernetes cluster:</p>
+
+            <div class="diagram-container">
+                <svg width="680" height="280" viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/>
+                        </linearGradient>
+                        <linearGradient id="purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/>
+                        </linearGradient>
+                        <linearGradient id="slate" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="680" height="280" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+                    
+                    <!-- Clients -->
+                    <rect x="20" y="110" width="100" height="50" rx="8" fill="url(#slate)"/>
+                    <text x="70" y="140" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">Browser Clients</text>
+                    
+                    <!-- Load Balancer -->
+                    <rect x="160" y="90" width="100" height="90" rx="8" fill="url(#blue)"/>
+                    <text x="210" y="130" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">Nginx / ALB</text>
+                    <text x="210" y="150" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="9">Load Balancer</text>
+
+                    <!-- FastAPI Nodes -->
+                    <rect x="310" y="30" width="120" height="50" rx="6" fill="url(#purple)"/>
+                    <text x="370" y="60" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 1</text>
+                    
+                    <rect x="310" y="110" width="120" height="50" rx="6" fill="url(#purple)"/>
+                    <text x="370" y="140" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 2</text>
+                    
+                    <rect x="310" y="190" width="120" height="50" rx="6" fill="url(#purple)"/>
+                    <text x="370" y="220" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 3</text>
+
+                    <!-- Redis PubSub & PostgreSQL -->
+                    <rect x="490" y="60" width="130" height="60" rx="8" fill="#0f172a"/>
+                    <text x="555" y="90" text-anchor="middle" fill="#38bdf8" font-family="sans-serif" font-size="10" font-weight="bold">Redis Cache</text>
+                    <text x="555" y="105" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">WS PubSub Message Bus</text>
+
+                    <rect x="490" y="150" width="130" height="60" rx="8" fill="#0f172a"/>
+                    <text x="555" y="180" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="10" font-weight="bold">PostgreSQL</text>
+                    <text x="555" y="195" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">PgBouncer Pooler</text>
+
+                    <!-- Intersect Lines -->
+                    <line x1="120" y1="135" x2="160" y2="135" stroke="#94a3b8" stroke-width="2"/>
+                    <line x1="260" y1="135" x2="310" y2="55" stroke="#94a3b8" stroke-width="1.5"/>
+                    <line x1="260" y1="135" x2="310" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+                    <line x1="260" y1="135" x2="310" y2="215" stroke="#94a3b8" stroke-width="1.5"/>
+
+                    <path d="M 430 55 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+                    <path d="M 430 135 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+                    <path d="M 430 215 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+
+                    <path d="M 430 55 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
+                    <path d="M 430 135 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
+                    <path d="M 430 215 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
+
+            <h2>2. Redis PubSub & PostgreSQL scaling</h2>
+            <ul>
+                <li><strong>Redis PubSub Message Bus</strong>: In a multi-server setup, WebSocket clients are split across different servers. If Server 1 triggers a stop-loss sell, clients connected to Server 2 wouldn't receive the notification. To resolve this, we implement **Redis Pub/Sub**. When an alert is triggered, it is published to a shared Redis channel, and all server pods listen to this channel and broadcast the message to their local clients.</li>
+                <li><strong>PostgreSQL Database Migration</strong>: SQLite is a file-based database that locks when writing, causing bottlenecks under high load. In production, we migrate to a **PostgreSQL** instance with **PgBouncer** connection pooling to manage database connections efficiently.</li>
+            </ul>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div class="chapter-container" id="ch6">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 6</div>
+                <h1 class="chapter-title">Cyber Security, Rate Limiting & Auth Protocols</h1>
+            </div>
+
+            <p>Security is critical for trading applications to prevent malicious attacks and protect user funds.</p>
+
+            <h2>1. Rate Limiting: The Token Bucket Algorithm</h2>
+            <p>To prevent malicious scripts from overwhelming our market scanner endpoints, we implement rate limiting using the **Token Bucket Algorithm**:
+            <ul>
+                <li>The server maintains a "bucket" that holds a maximum number of tokens (e.g., 30 tokens) for each IP address.</li>
+                <li>Each API request costs one token.</li>
+                <li>Tokens refill at a constant rate (e.g., 1 token per second).</li>
+                <li>If a user sends 100 requests in 5 seconds, the bucket empties, subsequent requests are blocked, and the server returns an `HTTP 429 Too Many Requests` error.</li>
+            </ul>
+            </p>
+
+            <h2>2. Secure Session Authentication</h2>
+            <p>To secure trading commands, we use stateless **JWT (JSON Web Tokens)**:
+            <ol>
+                <li>The user logs in with their credentials.</li>
+                <li>The server validates the credentials and returns an encrypted JWT signed with a private key (HS256 algorithm).</li>
+                <li>The client stores the token securely in `HttpOnly` cookies, preventing access via malicious client-side JavaScript (XSS attacks).</li>
+                <li>For each trade command (buy/sell), the client sends this cookie, and the server validates the signature before executing the order.</li>
+            </ol>
+            </p>
+        </div>
+
+        <!-- Chapter 7 -->
+        <div class="chapter-container" id="ch7">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 7</div>
                 <h1 class="chapter-title">50+ Comprehensive Interview Questions & Answers</h1>
             </div>
 
@@ -1071,7 +1223,7 @@ def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Head
                 <p><strong>Answer:</strong> The nav dock is centered horizontally using <code>left: 50%</code> and <code>transform: translateX(-50%)</code>. Animating `y` in GSAP overwrote the element's transform property to `translate(0px, y)`, removing the horizontal centering and throwing the bar off-screen. We resolved this by migrating the animation to native CSS `@keyframes` which isolates the animation rendering from Javascript execution halts.</p>
             </div>
 
-            <h2>Section D: System Design & WebSockets</h2>
+            <h2>Section E: System Design & WebSockets</h2>
 
             <div class="callout callout-interview">
                 <div class="callout-title">Q31: What is a WebSocket handshake?</div>
@@ -1182,10 +1334,10 @@ def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Head
             </div>
         </div>
 
-        <!-- Chapter 6 -->
-        <div class="chapter-container" id="ch6">
+        <!-- Chapter 8 -->
+        <div class="chapter-container" id="ch8">
             <div class="chapter-header">
-                <div class="chapter-num">Chapter 6</div>
+                <div class="chapter-num">Chapter 8</div>
                 <h1 class="chapter-title">Evolution, Challenges & Engineering Journey</h1>
             </div>
 
