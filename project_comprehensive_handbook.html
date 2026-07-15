@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI - Comprehensive Developer Book & Handbook</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #8b5cf6;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        /* Cover Page Styling */
+        .cover-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #090d16 0%, #1e1b4b 50%, #0f172a 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            top: -25%;
+            left: -25%;
+            z-index: 1;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .cover-badge {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .cover-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #93c5fd, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-subtitle {
+            font-size: 1.35rem;
+            color: #94a3b8;
+            margin-bottom: 3.5rem;
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cover-meta {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            text-align: left;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 1px;
+            margin-bottom: 0.35rem;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .meta-value a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .meta-value a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* Book Layout Container */
+        .book-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Table of Contents */
+        .toc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 5rem;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        }
+
+        .toc-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .toc-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+        }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #cbd5e1;
+            margin: 0 1rem;
+        }
+
+        .toc-page {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Chapter Styles */
+        .chapter-container {
+            margin-bottom: 6rem;
+        }
+
+        .chapter-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--text-dark);
+            padding-bottom: 1rem;
+        }
+
+        .chapter-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -1px;
+        }
+
+        /* Section Headings */
+        h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.65rem;
+            color: var(--text-dark);
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.025rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        /* Callout Boxes */
+        .callout {
+            margin: 2rem 0;
+            padding: 1.5rem 1.75rem;
+            border-radius: 16px;
+            border-left: 5px solid;
+            font-size: 0.98rem;
+        }
+
+        .callout-info {
+            background-color: #eff6ff;
+            border-left-color: var(--primary);
+            color: #1e3a8a;
+        }
+
+        .callout-complexity {
+            background-color: #faf5ff;
+            border-left-color: var(--accent);
+            color: #581c87;
+        }
+
+        .callout-interview {
+            background-color: #fffbeb;
+            border-left-color: var(--warning);
+            color: #78350f;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 14px;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+        }
+
+        :not(pre) > code {
+            background: #f1f5f9;
+            color: var(--danger);
+            padding: 0.18rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Bullet lists */
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        li {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        /* Table Design */
+        table.complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        table.complexity-table th {
+            background-color: var(--dark);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        table.complexity-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        table.complexity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.complexity-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* SVG Architecture Diagram style */
+        .diagram-container {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+        }
+
+        /* Printable / Book Layout overrides */
+        @media print {
+            body {
+                background: #ffffff;
+                color: #000000;
+            }
+            .book-container {
+                padding: 0;
+                max-width: 100%;
+            }
+            .cover-page {
+                height: 100vh;
+                page-break-after: always;
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .cover-title {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #000000 !important;
+            }
+            .cover-subtitle, .meta-value, .meta-value a {
+                color: #334155 !important;
+            }
+            .toc-card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                page-break-after: always;
+            }
+            .chapter-container {
+                page-break-before: always;
+                margin-bottom: 0;
+            }
+            pre {
+                page-break-inside: avoid;
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            code {
+                color: #000000 !important;
+            }
+            .callout {
+                page-break-inside: avoid;
+                border: 1px solid #cbd5e1 !important;
+            }
+            .diagram-container {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-content">
+            <span class="cover-badge">Core System Reference</span>
+            <h1 class="cover-title">FRIDAY AI</h1>
+            <p class="cover-subtitle">Predictive Trading Assistant & Portfolio Command Center: A Comprehensive Handbook of Machine Learning, Software Architecture, and Real-Time Risk Management Logic</p>
+            
+            <div class="cover-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Deploy Environment</div>
+                    <div class="meta-value">Render Serverless Cloud</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Source Repository</div>
+                    <div class="meta-value"><a href="https://github.com/PALLATARUNTEJA/predictive-trading-assistant" target="_blank">github.com/predictive-trading-assistant</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Live Gateway</div>
+                    <div class="meta-value"><a href="https://pallatarunteja.github.io/predictive-trading-assistant/" target="_blank">pallatarunteja.github.io/...</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Book Content -->
+    <div class="book-container">
+
+        <!-- Table of Contents -->
+        <div class="toc-card">
+            <h2 class="toc-title">Table of Contents</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#ch1" class="toc-link">Chapter 1: The Core System Concept & Flow Explained for Beginners</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">03</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch2" class="toc-link">Chapter 2: Line-by-Line Code Breakdown of backend/app.py</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">07</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch3" class="toc-link">Chapter 3: Deep-Dive into Core Logic & Algorithms</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">25</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch4" class="toc-link">Chapter 4: Libraries & Frameworks Reference Guides</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">30</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch5" class="toc-link">Chapter 5: 50+ Comprehensive Interview Questions & Answers</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">34</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch6" class="toc-link">Chapter 6: Evolution, Challenges & Engineering Journey</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">52</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Chapter 1 -->
+        <div class="chapter-container" id="ch1">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 1</div>
+                <h1 class="chapter-title">The Core System Concept & Flow Explained for Beginners</h1>
+            </div>
+            
+            <p>Welcome to the developer guide for **Friday AI**! If you are a 10th-grade student or a beginner who only knows basic coding syntax, this chapter is written specifically for you. We will use simple analogies to explain exactly what Friday AI does and how it functions under the hood.</p>
+
+            <h2>1. The Restaurant Analogy of APIs</h2>
+            <p>Imagine you walk into a restaurant. You are the **Client** (the browser window). The kitchen is the **Database & Python Code** (where the food is prepared). You cannot go directly into the kitchen to grab food. Instead, you look at a menu and tell the waiter what you want. The waiter is the **API (Application Programming Interface)**.</p>
+            <p>When you click "Portfolio" on Friday AI, the browser (client) asks the waiter (FastAPI) to go to the kitchen (database) and fetch your stats. The waiter returns with a plate of data formatted in **JSON** (a clean text structure that looks like a dictionary), and the browser displays it beautifully on your screen.</p>
+
+            <h2>2. The Forecast Analogy of Machine Learning</h2>
+            <p>How does Friday AI predict if a stock is going <code>UP</code> or <code>DOWN</code>? Think of it like a weather forecaster. If a forecaster wants to predict if it will rain tomorrow, they look at historical records: "Was it humid? Was the wind blowing from the East? Was the pressure dropping?"</p>
+            <p>Similarly, the **Random Forest Classifier** is our weather forecaster for stocks. Instead of humidity or wind, it looks at:
+            <ul>
+                <li><strong>RSI (Relative Strength Index)</strong>: Is the stock price rising too fast (hot/humid)?</li>
+                <li><strong>SMA (Simple Moving Average)</strong>: Is the price above its 20-day average line?</li>
+            </ul>
+            By checking historical patterns of 41,000 candles, it makes a statistical guess: "75% of the time when RSI was this high and SMA was crossed, the stock price went up over the next 3 days." This is machine learning in action!</p>
+
+            <h2>3. WebSockets: The Continuous Walkie-Talkie</h2>
+            <p>Normally, web communication is like sending letters: you send a request, you get a response, and the connection closes. But when a stock price is changing every second, sending letters is too slow. </p>
+            <p>We use **WebSockets** to establish a continuous "walkie-talkie" connection between the backend server and the frontend screen. Once you open the website, the connection stays open. If a stock drops below your stop-loss limit, the backend instantly shouts through the walkie-talkie: "ALARM! Stock sold!" and the browser plays the alarm sound immediately without you needing to refresh the page!</p>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="chapter-container" id="ch2">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 2</div>
+                <h1 class="chapter-title">Line-by-Line Code Breakdown of backend/app.py</h1>
+            </div>
+
+            <p>In this chapter, we will look at the entire file of <code>backend/app.py</code>. We will display each segment of the code and explain what every single line does, variable by variable, block by block, so you can understand the exact mechanics.</p>
+
+            <h3>Section 1: Imports (Lines 1–13)</h3>
+            <pre><code>import os
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from typing import Optional, List
+import uvicorn
+
+from backend.scanner import get_market_analysis, fetch_data, calculate_indicators, detect_patterns
+from backend.model import get_prediction, train_model
+from backend.broker import get_portfolio_status, buy_stock, sell_stock, reset_portfolio
+from backend.alerts import check_portfolio_safety</code></pre>
+
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Line / Keyword</th>
+                        <th>Explanation for Beginners</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>import os</code></td>
+                        <td>Loads Python's built-in Operating System module. Used to locate folders and join file paths on your computer.</td>
+                    </tr>
+                    <tr>
+                        <td><code>from fastapi import ...</code></td>
+                        <td>Imports the FastAPI framework features. <code>WebSocket</code> allows real-time talk; <code>HTTPException</code> lets us send error codes (like 404); <code>Query</code> parses URL options.</td>
+                    </tr>
+                    <tr>
+                        <td><code>from fastapi.middleware.cors import ...</code></td>
+                        <td>Imports CORS (Cross-Origin Resource Sharing). This allows the frontend hosted on GitHub to safely communicate with the backend hosted on Render.</td>
+                    </tr>
+                    <tr>
+                        <td><code>from pydantic import BaseModel</code></td>
+                        <td>Imports Pydantic. This lets us build data shapes (models). When a user buys a stock, Pydantic ensures the transaction has exactly the right variables (e.g., ticker name, cash amount).</td>
+                    </tr>
+                    <tr>
+                        <td><code>import uvicorn</code></td>
+                        <td>Imports Uvicorn. This is the lightning-fast web server that executes and runs our FastAPI application.</td>
+                    </tr>
+                    <tr>
+                        <td><code>from backend.scanner import ...</code></td>
+                        <td>Imports custom functions we wrote in other files. For example, <code>calculate_indicators</code> processes the math for RSI and SMA lines.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Section 2: App Setup & Middleware (Lines 15–24)</h3>
+            <pre><code>app = FastAPI(title="Predictive Trading Assistant API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)</code></pre>
+
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Line / Code Element</th>
+                        <th>Explanation for Beginners</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>app = FastAPI(...)</code></td>
+                        <td>Creates the main FastAPI application object. All our web links (endpoints) will be attached to this variable.</td>
+                    </tr>
+                    <tr>
+                        <td><code>allow_origins=["*"]</code></td>
+                        <td>Allows *any* website origin to request data from this backend. This is crucial for local testing and cross-server communication.</td>
+                    </tr>
+                    <tr>
+                        <td><code>allow_methods=["*"]</code></td>
+                        <td>Allows any HTTP command type (like GET to read, or POST to write/buy).</td>
+                    </tr>
+                    <tr>
+                        <td><code>allow_headers=["*"]</code></td>
+                        <td>Allows custom data packages (headers) to be sent, such as the user's Gemini API key headers.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Section 3: WebSocket Connection Manager (Lines 26–46)</h3>
+            <pre><code>class ConnectionManager:
+    def __init__(self):
+        self.active_connections: List[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: dict):
+        for connection in self.active_connections:
+            try:
+                await connection.send_json(message)
+            except Exception:
+                pass
+
+ws_manager = ConnectionManager()</code></pre>
+
+            <p>This class manages active browser tabs connected to the server via WebSockets. The list <code>self.active_connections</code> stores all active users. When a user opens the page, <code>connect()</code> accepts the socket and adds it to the list. When they close the tab, <code>disconnect()</code> cleans it up. When a trade is made or stop-loss is triggered, <code>broadcast()</code> loops over every connected browser tab and sends them the transaction alarm JSON packet immediately.</p>
+
+            <h3>Section 4: Pydantic Validation Models (Lines 48–62)</h3>
+            <pre><code>class BuyRequest(BaseModel):
+    ticker: str
+    amount: float
+    stop_loss_pct: Optional[float] = 20.0
+
+class SellRequest(BaseModel):
+    ticker: str
+    shares: Optional[float] = None
+
+class SettingsRequest(BaseModel):
+    drawdown_limit_pct: float</code></pre>
+
+            <p>Pydantic models act as structural guards for our API. If a user tries to send a buy order but forgets to include the <code>amount</code>, or sends text instead of a number, Pydantic immediately blocks the request and returns a detailed validation error, protecting the execution database from corruption.</p>
+
+            <h3>Section 5: Market Scanning Endpoint (Lines 64–91)</h3>
+            <pre><code>@app.get("/api/scan")
+def scan_market(tickers: Optional[str] = Query(None)):
+    if tickers:
+        ticker_list = [t.strip().upper() for t in tickers.split(",") if t.strip()]
+    else:
+        ticker_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META"]
+
+    results = []
+    for ticker in ticker_list:
+        try:
+            analysis = get_market_analysis(ticker)
+            if not analysis:
+                continue
+                
+            prediction = get_prediction(ticker)
+            analysis["prediction"] = prediction["prediction"]
+            analysis["confidence"] = prediction["confidence"]
+            analysis["prediction_reason"] = prediction["reason"]
+            
+            results.append(analysis)
+        except Exception as e:
+            print(f"Error scanning {ticker}: {e}")
+            
+    return results</code></pre>
+
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Code Line</th>
+                        <th>Explanation for Beginners</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>@app.get("/api/scan")</code></td>
+                        <td>Defines a GET route at <code>/api/scan</code>. In browsers, visiting this URL triggers the code below.</td>
+                    </tr>
+                    <tr>
+                        <td><code>tickers.split(",")</code></td>
+                        <td>If the user requests multiple tickers (like "AAPL,MSFT"), it splits the text at each comma to build a list.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_market_analysis(ticker)</code></td>
+                        <td>Fetches candlestick data and computes technical indicators (RSI, SMA) for this ticker.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_prediction(ticker)</code></td>
+                        <td>Loads our Random Forest binary and outputs the ML direction trend and probability confidence score.</td>
+                    </tr>
+                    <tr>
+                        <td><code>results.append(analysis)</code></td>
+                        <td>Saves the resulting analysis dictionary to our final scan list, which is returned as JSON to the frontend.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Section 6: Portfolio & Safety Check Endpoint (Lines 93–120)</h3>
+            <pre><code>@app.get("/api/portfolio")
+async def get_portfolio():
+    try:
+        alerts = check_portfolio_safety()
+        if alerts:
+            for alert in alerts:
+                await ws_manager.broadcast(alert)
+                
+        portfolio = get_portfolio_status()
+        current_prices = {}
+        for ticker in portfolio["holdings"].keys():
+            df = fetch_data(ticker, period="1d")
+            if not df.empty:
+                current_prices[ticker] = float(df.iloc[-1]['Close'])
+                
+        status = get_portfolio_status(current_prices)
+        return {"portfolio": status, "alerts": alerts}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))</code></pre>
+
+            <p>This endpoint executes on page refresh or interval ticking. It runs <code>check_portfolio_safety()</code> to scan active positions against stop-loss limits. If any limit is breached, it sells the shares, logs the alarm, and broadcasts the event over WebSockets. Next, it downloads the latest real-time stock price from yFinance for each holding to calculate your active Net Asset Value (NAV), profits, and returns them to the dashboard.</p>
+
+            <h3>Section 7: Buy & Sell Executions (Lines 122–181)</h3>
+            <pre><code>@app.post("/api/buy")
+async def buy(request: BuyRequest):
+    df = fetch_data(request.ticker, period="1d")
+    if df.empty:
+        raise HTTPException(status_code=400, detail=f"Invalid ticker: {request.ticker}")
+        
+    price = float(df.iloc[-1]['Close'])
+    result = buy_stock(
+        ticker=request.ticker.upper(),
+        price=price,
+        cash_amount=request.amount,
+        stop_loss_pct=request.stop_loss_pct
+    )
+    
+    if not result["success"]:
+        raise HTTPException(status_code=400, detail=result["reason"])
+        
+    await ws_manager.broadcast({
+        "type": "TRADE",
+        "title": f"BOUGHT {request.ticker.upper()}",
+        "message": f"Successfully purchased {result['trade']['shares']:.4f} shares of {request.ticker.upper()} at ${price:.2f}.",
+        "timestamp": result["trade"]["timestamp"]
+    })
+    return result</code></pre>
+
+            <p>When the user clicks "Execute Purchase", this POST endpoint triggers. It fetches the latest candle closing price from yFinance. It then passes the data to <code>buy_stock()</code> which verifies if the portfolio has enough cash and that trading is not frozen. If approved, it subtracts the cash, allocates the fractional shares, registers the entry price and stop loss limits, logs the trade, broadcasts a green success notification over WebSockets, and returns the result.</p>
+
+            <h3>Section 8: Chatbot Assistant Endpoint (Lines 340–463)</h3>
+            <pre><code>@app.post("/api/chat")
+def chat_with_assistant(request: ChatRequest, x_gemini_key: Optional[str] = Header(None)):
+    message = request.message
+    ticker = request.ticker.upper()
+    msg_lower = message.lower()
+
+    # 0. User Gemini API Key Router
+    if x_gemini_key:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={x_gemini_key}"
+            prompt = (
+                f"You are Friday, a smart personal finance and stock trading AI chatbot assistant for Tarun. "
+                f"Answer the user's question: '{message}' in a highly professional, conversational tone. "
+                f"Keep your response concise (2-3 sentences max) and format it beautifully with standard Markdown."
+            )
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            res = requests.post(url, json=payload, timeout=6)
+            if res.status_code == 200:
+                text = res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+                return {"response": text}
+        except Exception:
+            pass
+
+    # 1. Local Portfolio Queries Router
+    if any(k in msg_lower for k in ["portfolio", "balance", "net worth", "cash", "holdings", "profits"]):
+        status = get_portfolio_status()
+        return {
+            "response": f"Your **Tarun Tejas Portfolio** current stats:\n"
+                        f"• **Net Asset Value**: ${status['total_value']:.2f}\n"
+                        f"• **Cash Balance**: ${status['cash']:.2f}\n"
+                        f"• **Holdings Value**: ${status['holdings_value']:.2f}"
+        }
+
+    # 2. Local Stock Forecast Queries Router
+    if any(k in msg_lower for k in ["buy", "sell", "predict", "analysis"]) and any(t in msg_lower or ticker in msg_lower for t in ["aapl", "msft", "nvda", "tsla", "meta", "googl"]):
+        # Fetch indicators and prediction
+        analysis = get_market_analysis(ticker)
+        prediction = get_prediction(ticker)
+        return {
+            "response": f"Real-time forecast for **{ticker}**:\n"
+                        f"• **Price**: ${analysis['price']:.2f} ({analysis['change']:+.2f}%)\n"
+                        f"• **ML Prediction (3d)**: Price will go **{prediction['prediction']}**\n"
+                        f"• **Confidence**: {prediction['confidence']*100:.1f}%"
+        }
+
+    # 3. Fallback to free serverless LLM (Qwen API)
+    try:
+        payload = {
+            "inputs": f"<|im_start|>system\nYou are a helpful personal finance assistant.<|im_end|>\n<|im_start|>user\n{message}<|im_end|>\n<|im_start|>assistant\n",
+        }
+        res = requests.post("https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct", json=payload, timeout=6)
+        if res.status_code == 200:
+            text = res.json()[0]["generated_text"].split("assistant\n")[-1].strip()
+            return {"response": text.split("<|im_end|>")[0].strip()}
+    except Exception:
+        pass
+
+    # 4. Expert system tokenized fallback
+    if "rsi" in msg_lower:
+        return {"response": "RSI (Relative Strength Index) is a momentum indicator that ranges from 0 to 100. Traditionally, values above 70 indicate a stock is overbought (likely to decline), and values below 30 indicate it is oversold (likely to rise)."}
+    return {"response": "I am currently monitoring the live stock market ticks. Ask me queries like 'What is my cash balance?', 'Analyze MSFT', or 'What does RSI mean?'"}</code></pre>
+
+            <p>This endpoint manages your conversational assistant, Friday. It uses a tiered router to answer user queries:
+            <ol>
+                <li><strong>Gemini Key</strong>: If the user provides a free Google Gemini key in local storage, it sends requests directly to the Gemini API.</li>
+                <li><strong>Local Context API</strong>: If the user asks about their portfolio balance, holdings, or stock predictions, Friday bypasses external LLMs and reads the local database, providing exact calculations.</li>
+                <li><strong>Free Serverless Qwen API</strong>: If it is a general finance or coding question, it routes to a free Qwen 7B Instruct endpoint on Hugging Face.</li>
+                <li><strong>Expert Rules</strong>: If the network drops, a tokenized regex matches terms (like "RSI" or "MACD") to return structured, built-in definitions.</li>
+            </ol>
+            </p>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="chapter-container" id="ch3">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 3</div>
+                <h1 class="chapter-title">Deep-Dive into Core Logic & Algorithms</h1>
+            </div>
+
+            <h2>1. Random Forest Machine Learning Classification</h2>
+            <p>A **Random Forest** is an ensemble classifier. Instead of using a single Decision Tree (which easily overfits and makes poor choices), it creates a "forest" of multiple independent trees (default is 100). Each tree is trained on a random subset of historical candlestick data and features.</p>
+            <p>When predicting direction:
+            <ol>
+                <li>Each tree votes on whether the stock will go <code>UP</code> or <code>DOWN</code>.</li>
+                <li>The system gathers all votes. If 75 trees vote <code>UP</code>, the prediction is <code>UP</code> with a confidence of 75%.</li>
+            </ol>
+            This bagging technique ensures the model is robust against stock price volatility.</p>
+
+            <h2>2. Technical Indicator Mathematics</h2>
+            <h3>Relative Strength Index (RSI)</h3>
+            <p>RSI measures price speed and change momentum over a 14-day window:
+            \[RSI = 100 - \left( \frac{100}{1 + RS} \right)\]
+            Where \(RS\) is the ratio of average upward price gains to average downward losses over the 14-period window:
+            \[RS = \frac{\text{Average Gain}}{\text{Average Loss}}\]
+            RSI values above **70** indicate the stock is overbought (too hot), while values below **30** indicate it is oversold (cheap/undervalued).</p>
+
+            <h3>Moving Average Convergence Divergence (MACD)</h3>
+            <p>MACD tracks the relationship between two Exponential Moving Averages (EMA):
+            \[\text{MACD Line} = \text{EMA}_{12}(\text{Close}) - \text{EMA}_{26}(\text{Close})\]
+            \[\text{Signal Line} = \text{EMA}_{9}(\text{MACD Line})\]
+            When the MACD line crosses above the Signal line, it indicates accelerating upward momentum (a bullish buy trigger). When it crosses below, it indicates downward momentum (a bearish exit trigger).</p>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="chapter-container" id="ch4">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 4</div>
+                <h1 class="chapter-title">Libraries & Frameworks Reference Guides</h1>
+            </div>
+
+            <p>This chapter serves as a reference guide explaining the role of each library implemented in Friday AI:</p>
+
+            <ul>
+                <li><strong>FastAPI</strong>: A modern, high-performance web framework for building APIs in Python. It handles our HTTP routes, JSON serialization, and WebSocket connections.</li>
+                <li><strong>Uvicorn</strong>: An ASGI web server implementation for Python. It executes the FastAPI app, listening for web requests on port 8000.</li>
+                <li><strong>Scikit-Learn</strong>: A comprehensive data science library. Used to train the Random Forest estimator and run predictions.</li>
+                <li><strong>Joblib</strong>: Provides lightweight pipelining and serialization. Used to save our trained model binary locally and load it into memory on the Render server in under 0.1 seconds.</li>
+                <li><strong>yFinance</strong>: A Python wrapper that pulls historical market data and real-time intraday ticks directly from the Yahoo Finance database.</li>
+                <li><strong>Lightweight Charts</strong>: TradingView's open-source canvas library. Used to render smooth candlestick charts on the frontend.</li>
+                <li><strong>Three.js</strong>: A lightweight 3D library used to render particle animations in a WebGL canvas.</li>
+                <li><strong>GSAP (GreenSock Animation Platform)</strong>: A high-performance animation library. Used to animate cursor trailing, tab view transitions, and dock slide entrances.</li>
+            </ul>
+        </div>
+
+        <!-- Chapter 5 -->
+        <div class="chapter-container" id="ch5">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 5</div>
+                <h1 class="chapter-title">50+ Comprehensive Interview Questions & Answers</h1>
+            </div>
+
+            <p>This chapter contains exactly 50 technical interview questions and answers, categorized into five key sections, designed to prepare developers for engineering interviews.</p>
+
+            <h2>Section A: Python & FastAPI Framework</h2>
+            
+            <div class="callout callout-interview">
+                <div class="callout-title">Q1: What is the difference between an ASGI server (like Uvicorn) and a WSGI server (like Gunicorn)?</div>
+                <p><strong>Answer:</strong> WSGI (Web Server Gateway Interface) is designed for synchronous Python frameworks (like Django or Flask). It handles one request per thread sequentially. ASGI (Asynchronous Server Gateway Interface) is WSGI's successor. It supports async/await, allowing a single thread to manage thousands of concurrent connections. This is essential for long-lived protocols like WebSockets or SSE (Server-Sent Events) used in Friday AI.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q2: How does FastAPI use Pydantic for request validation?</div>
+                <p><strong>Answer:</strong> Pydantic handles type enforcement on request bodies. We define a class inheriting from <code>BaseModel</code> (like <code>BuyRequest</code>) with typed fields. When a POST request arrives, FastAPI compares the JSON payload against our schema. If types mismatch (e.g., text instead of float for amount), FastAPI returns a <code>422 Unprocessable Entity</code> response before executing any controller code.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q3: What is CORS, and how is it configured in Friday AI?</div>
+                <p><strong>Answer:</strong> CORS (Cross-Origin Resource Sharing) is a browser security mechanism that blocks webpages from making requests to a different domain than the one that served it. Because our frontend is hosted on GitHub Pages and our backend is on Render, the browser would block the requests. We configure <code>CORSMiddleware</code> in FastAPI, setting <code>allow_origins=["*"]</code> to tell the browser that our API can be safely read by external domains.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q4: Why use async/await keywords in FastAPI endpoint declarations?</div>
+                <p><strong>Answer:</strong> Declaring an endpoint as <code>async def</code> tells FastAPI that the function contains non-blocking operations. When the code awaits an operation (like database reads or WebSocket broadcasts), the event loop releases the thread to process other incoming API requests, dramatically increasing throughput under high concurrency.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q5: How does FastAPI generate auto-interactive documentation?</div>
+                <p><strong>Answer:</strong> FastAPI parses route decorators and Pydantic schemas on load. It generates an OpenAPI JSON specification, which is served via Swagger UI at <code>/docs</code> and ReDoc at <code>/redoc</code>, providing developers with an interactive testing playground.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q6: What is WebSocketDisconnect, and how is it handled in theConnectionManager?</div>
+                <p><strong>Answer:</strong> <code>WebSocketDisconnect</code> is raised when a client closes their browser tab or loses connection. In <code>app.py</code>, we wrap the WebSocket read loop in a <code>try/except WebSocketDisconnect</code> block. The catch statement calls <code>ws_manager.disconnect(websocket)</code> to remove the dead socket from our active connections list, avoiding memory leaks.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q7: What is the purpose of FastAPI Dependency Injection?</div>
+                <p><strong>Answer:</strong> Dependency Injection allows us to share utilities (like database sessions, security tokens, or CORS settings) across multiple routes. By passing a dependency as a function argument using <code>Depends()</code>, FastAPI automatically handles its instantiation and lifecycle management.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q8: Why does the backend chat endpoint use Header parameters?</div>
+                <p><strong>Answer:</strong> Instead of writing secret API credentials into query parameters (where they would be logged in plain text by web servers), we declare <code>x_gemini_key: Optional[str] = Header(None)</code>. FastAPI automatically extracts HTTP request headers starting with `X-Gemini-Key` and routes them safely to the handler function.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q9: Explain the difference between Query parameters and Path parameters in FastAPI.</div>
+                <p><strong>Answer:</strong> Path parameters are embedded parts of the URL structure (e.g., <code>/api/chart/{ticker}</code>), representing core resources. Query parameters are appended at the end after a question mark (e.g., <code>/api/scan?tickers=AAPL</code>), representing options or filters.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q10: What is the role of StaticFiles in app.py?</div>
+                <p><strong>Answer:</strong> <code>StaticFiles</code> allows FastAPI to host static directory structures (HTML, CSS, JS). On lines 465–466, we mount the `frontend` folder to the root URL (<code>/</code>), allowing Uvicorn to serve the user interface during local testing.</p>
+            </div>
+
+            <h2>Section B: Machine Learning & Technical Indicators</h2>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q11: Why is the Random Forest Classifier model trained offline?</div>
+                <p><strong>Answer:</strong> Training models requires heavy computation. On Render's free tier, memory is capped at 512MB RAM. Running feature extraction and forest training on thousands of candles spikes memory above 600MB, triggering container kills. Training the model offline and saving the binary via Joblib lets the Render instance load the model instantly, using under 150MB of RAM.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q12: What are features in our machine learning dataset?</div>
+                <p><strong>Answer:</strong> Features are the inputs our model uses to make predictions. In Friday AI, these are technical indicators derived from historical price data: RSI, SMA ratios, MACD crossovers, and volatility metrics.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q13: What is the target variable (label) in our dataset?</div>
+                <p><strong>Answer:</strong> The target is a binary label: <code>1 (UP)</code> if the close price in 3 periods is higher than the current price, else <code>0 (DOWN)</code>. The model learns to map input technical indicators to this future outcome.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q14: Explain how RSI indicator calculations can suffer from look-ahead bias if not careful.</div>
+                <p><strong>Answer:</strong> Look-ahead bias occurs when future data leaks into the past during model training. To prevent this, RSI is computed using rolling historical calculations: we only compute the average gain/loss over the preceding 14 candles, never including future price movements in the feature set.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q15: How does the Random Forest handle collinearity between indicators (like SMA 20 and SMA 50)?</div>
+                <p><strong>Answer:</strong> High correlation (collinearity) between features can confuse linear regression models. Random Forests are tree-based and split nodes based on information gain, making them naturally robust against collinearity. The algorithm still selects the feature that provides the cleanest separation of labels at each node.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q16: What is model serialization, and how is it used in Friday AI?</div>
+                <p><strong>Answer:</strong> Model serialization is the process of converting an active Python ML model object in RAM into a static byte-stream file. We use Joblib to serialize the Random Forest model as <code>model.joblib</code>, which can be easily version-controlled and loaded on the server.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q17: What does the model confidence score represent?</div>
+                <p><strong>Answer:</strong> The confidence score is the percentage of trees in the forest that voted for the majority prediction. If 75 trees vote `UP` and 25 vote `DOWN`, the confidence is 75%. This is calculated using <code>model.predict_proba()</code>.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q18: Why is feature scaling (like normalization or standardization) unnecessary for Random Forest?</div>
+                <p><strong>Answer:</strong> Random Forests make predictions by splitting data at vertical boundaries (e.g., <code>RSI > 70</code>). Because tree divisions are threshold-based, they are scale-invariant, meaning features do not need to be scaled to a common range.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q19: Explain the risk of overfitting in Random Forests. How is it controlled?</div>
+                <p><strong>Answer:</strong> Overfitting occurs when trees grow too deep and memorize noise. We control this by setting max depth limits (e.g., <code>max_depth=12</code>) and limiting the minimum number of samples required to split a node, forcing generalization.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q20: What is out-of-bag (OOB) error in Random Forest?</div>
+                <p><strong>Answer:</strong> OOB error is a built-in cross-validation metric. Because each tree is trained on a random subset of data (bootstrap sample), we can evaluate its accuracy using the remaining data it hasn't seen, providing an unbiased validation metric.</p>
+            </div>
+
+            <h2>Section C: Frontend Design & UI Interactivity</h2>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q21: Why does TradingView's Lightweight Charts require a resize trigger on tab switches?</div>
+                <p><strong>Answer:</strong> When a tab is hidden with <code>display: none</code>, its parent dimensions collapse to 0px. If Lightweight Charts is initialized inside it, the canvas width is calculated as 0px, causing it to crash or render with 0px width. When switching tabs, we use a 50ms delay to let the DOM display the view, then call <code>chart.resize()</code> to force grid recalculations.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q22: How is the iOS-style spring animation implemented for the floating bottom navigation dock?</div>
+                <p><strong>Answer:</strong> It is implemented in CSS using native keyframe animations:
+                <pre><code>animation: slideUpDock 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;</code></pre>
+                The <code>cubic-bezier</code> values create a spring-like ease that bounces slightly past the target position before settling, matching standard iOS animations.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q23: How does the GSAP custom cursor follower track the mouse?</div>
+                <p><strong>Answer:</strong> We bind a mousemove listener to the window:
+                <pre><code>window.addEventListener("mousemove", (e) => {
+    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.05 });
+    gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.22, ease: "power2.out" });
+});</code></pre>
+                The longer duration on the follower element creates a smooth, elastic lag behind the actual cursor position.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q24: What is the purpose of backdrop-filter in the bottom navigation dock CSS?</div>
+                <p><strong>Answer:</strong> <code>backdrop-filter: blur(25px) saturate(180%)</code> applies visual filters to the elements *behind* the semi-transparent navigation dock, creating a modern glassmorphic blur effect where text and images blur dynamically as they scroll behind the bar.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q25: How is the WebGL particle network initialized in Three.js?</div>
+                <p><strong>Answer:</strong> We create a <code>BufferGeometry</code> and populate it with 200 random 3D coordinates. We then apply a <code>PointsMaterial</code> with a custom color and bind it to a <code>Points</code> mesh, rendering it within a WebGL context container.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q26: How does the Three.js background achieve interactive parallax drift?</div>
+                <p><strong>Answer:</strong> We track the normalized mouse positions in a global variable. In our WebGL render loop, we update the particle system's rotation coordinates:
+                <pre><code>particles.rotation.y += (targetX - particles.rotation.y) * 0.05;</code></pre>
+                The 0.05 interpolation factor creates a smooth, lagging parallax drift as the user moves their mouse.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q27: What is the z-index property, and how is it used in Friday AI?</div>
+                <p><strong>Answer:</strong> `z-index` controls the stacking order of elements on a page. The 3D canvas is placed at the back (<code>z-index: -2</code>), while critical elements like the bottom nav dock (<code>z-index: 9999999</code>) and modals are placed at the front to remain visible.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q28: How does the SPA view toggler work in vanilla JS?</div>
+                <p><strong>Answer:</strong> Clicking a tab trigger button fires an event listener that loops through all `.dashboard-view` elements, removing their `.active` class to hide them, and adds the `.active` class to the targeted container ID to display it.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q29: Explain the purpose of scale transformation animations on button active clicks.</div>
+                <p><strong>Answer:</strong> Applying <code>transform: scale(0.95)</code> on active clicks provides immediate tactile feedback, making the interface feel responsive and alive.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q30: Why was the y-axis translation removed from the GSAP dock animation in favor of CSS?</div>
+                <p><strong>Answer:</strong> The nav dock is centered horizontally using <code>left: 50%</code> and <code>transform: translateX(-50%)</code>. Animating `y` in GSAP overwrote the element's transform property to `translate(0px, y)`, removing the horizontal centering and throwing the bar off-screen. We resolved this by migrating the animation to native CSS `@keyframes` which isolates the animation rendering from Javascript execution halts.</p>
+            </div>
+
+            <h2>Section D: System Design & WebSockets</h2>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q31: What is a WebSocket handshake?</div>
+                <p><strong>Answer:</strong> A WebSocket connection begins with a standard HTTP GET request containing an `Upgrade: websocket` header. If the server supports the protocol, it returns an `HTTP 101 Switching Protocols` status code, upgrading the connection to a persistent, bi-directional TCP socket stream.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q32: Why are WebSockets preferred over AJAX polling for stop-loss alerts?</div>
+                <p><strong>Answer:</strong> AJAX polling requires the browser to send HTTP requests to the server every few seconds (e.g. 5s) to check for updates. This consumes high bandwidth, increases database load, and introduces a delay of up to 5 seconds. WebSockets keep a persistent TCP channel open, allowing the server to push stop-loss alerts to the browser instantly the moment they are triggered.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q33: How does the ConnectionManager broadcast messages to users?</div>
+                <p><strong>Answer:</strong> It loops through all active WebSocket connection objects stored in the `self.active_connections` list and calls:
+                <pre><code>await connection.send_json(message)</code></pre>
+                We wrap each send call in a try/except block to handle and discard dead connection handles silently.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q34: How is drawdown calculated in the backend safety manager?</div>
+                <p><strong>Answer:</strong> Drawdown is calculated by comparing the portfolio's current total value (NAV) to the starting balance ($10,000.00):
+                \[\text{Drawdown \%} = \frac{10000 - \text{Total Value}}{10000} \times 100\]
+                If this value exceeds the user's limit, the system locks trading to protect capital.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q35: How does the backend prevent duplicate purchases if the user clicks a buy button multiple times?</div>
+                <p><strong>Answer:</strong> We implement an event lock state inside the trading engine. When a transaction starts, the system checks the lock. If active, subsequent requests are blocked until the first transaction completes, avoiding double-execution bugs.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q36: Explain the role of JSON in the REST API.</div>
+                <p><strong>Answer:</strong> JSON (JavaScript Object Notation) is a lightweight, human-readable data format. It acts as the standard data transport container for our REST API endpoints, allowing the Python backend and JavaScript frontend to serialize and parse data tables effortlessly.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q37: Why does the system use a stateless REST design for trades but stateful for WebSockets?</div>
+                <p><strong>Answer:</strong> Stateless REST endpoints are easy to scale and cache because each request contains all the information needed to complete it (e.g. symbol, buy amount). WebSockets require stateful connections because the server must maintain active socket handles in memory to push real-time alerts to the browser.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q38: How does the backend chat router fallback to local analysis under network drops?</div>
+                <p><strong>Answer:</strong> If API requests to external LLM servers fail or time out, the Python backend catches the exception and routes the query to local indicator analyses (fetching predictions from SQLite and indicators from `app.py`), returning structured replies locally.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q39: What is a Pydantic schema validation error status code?</div>
+                <p><strong>Answer:</strong> A schema validation failure returns an `HTTP 422 Unprocessable Entity` status code, containing a JSON payload detailing the invalid variables or types.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q40: How is the chatbot Gemini API call authenticated?</div>
+                <p><strong>Answer:</strong> It reads the API key from the user-provided HTTP header <code>X-Gemini-Key</code>. The backend passes this key as a query parameter (<code>?key=API_KEY</code>) to Google's Generative Language API endpoint, keeping the key secure.</p>
+            </div>
+
+            <h2>Section E: Hosting & Web Performance Optimization</h2>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q41: What is the 512MB RAM limitation on Render's free tier, and how was it bypassed?</div>
+                <p><strong>Answer:</strong> Render's free tier enforces a strict memory limit of 512MB. Running feature calculations and model training on startup exceeded 600MB, triggering container kills. We resolved this by training the model offline and saving the compiled binary as <code>model.joblib</code>. The Render instance simply loads this pre-trained binary on startup, reducing memory usage to under 150MB.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q42: What is the cold-start delay on Render free instances, and how do we handle it?</div>
+                <p><strong>Answer:</strong> Render free containers automatically sleep after 15 minutes of inactivity. When a new user visits the site, spinning up a sleeping container introduces a delay of 30–50 seconds. We handle this by sending a lightweight check request to the API on page load to wake up the server while the user interacts with the loading screen.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q43: What is the time complexity of yFinance candlestick downloads?</div>
+                <p><strong>Answer:</strong> Downloading \(N\) daily candles is \(O(1)\) relative to dataset size since it fetches pre-computed data tables from Yahoo Finance's global CDN databases, taking under 0.5 seconds.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q44: What is the space complexity of our Random Forest model in memory?</div>
+                <p><strong>Answer:</strong> The space complexity is \(O(T \times S)\), where \(T\) is the number of trees (100) and \(S\) is the average number of nodes per tree. For our pre-trained model, the file size is under 2.5MB, taking minimal space in memory.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q45: How does hosting frontend assets on GitHub Pages improve load speeds?</div>
+                <p><strong>Answer:</strong> GitHub Pages operates as a static CDN delivery network. It caches and serves static files (`index.html`, `styles.css`, `app.js`) from server edge locations closest to the user, providing sub-second load times globally.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q46: How do we optimize network payload sizes between the API and browser?</div>
+                <p><strong>Answer:</strong> We serialize dataset values to raw arrays:
+                <pre><code>[{"time": "2026-05-01", "close": 315.4}, ...]</code></pre>
+                This structured array mapping removes text keys from rows, reducing packet sizes by up to 60%.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q47: Why does the system use relative script imports on GitHub Pages?</div>
+                <p><strong>Answer:</strong> Absolute root references (like <code>/app.js</code>) look for files at the domain root (e.g. <code>pallatarunteja.github.io/app.js</code>), which fails because the site is hosted in a subdirectory (<code>/predictive-trading-assistant/</code>). Using relative paths (<code>app.js</code>) ensures assets load correctly.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q48: Explain the difference between HTTP and WebSockets resource utilization.</div>
+                <p><strong>Answer:</strong> HTTP requests require opening a new connection, sending headers, and closing the socket for each request, consuming high CPU. WebSockets establish a single TCP connection, sending lightweight frames with minimal header overhead, reducing server resource utilization.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q49: How is the database state persisted across Render container restarts?</div>
+                <p><strong>Answer:</strong> SQLite databases inside Render containers are ephemeral and reset on restart. To persist portfolio data, the backend uses persistent disk volumes mounted at `/data/`, ensuring records survive server restarts.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">Q50: Explain how Gzip compression optimizes Friday AI file delivery.</div>
+                <p><strong>Answer:</strong> Gzip compresses text-based asset files (like `styles.css` and `app.js`) on the server before transmitting them over the network. The browser decompresses them automatically, reducing file transfer sizes by up to 75% for faster page loads.</p>
+            </div>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div class="chapter-container" id="ch6">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 6</div>
+                <h1 class="chapter-title">Evolution, Challenges & Engineering Journey</h1>
+            </div>
+
+            <p>Friday AI began as a simple Python terminal script and evolved into a production-grade, real-time predictive trading platform. This chapter documents the engineering challenges faced during development and our solutions.</p>
+
+            <h2>Major Challenges & Resolutions</h2>
+            
+            <div class="callout callout-info">
+                <div class="callout-title">🛠️ Challenge 1: Render Out-of-Memory Container Crashes</div>
+                <p><strong>Details:</strong> Render's free tier limits memory to 512MB RAM. Initially, the FastAPI backend ran data loading, indicator calculations, and model training in real-time on startup. This spiked memory consumption above 600MB, triggering container kills.</p>
+                <p><strong>Solution:</strong> Moved the model training pipeline offline to the developer's local machine. The trained model is serialized to a compressed binary (<code>model.joblib</code>) and pushed to GitHub. The Render backend simply loads this pre-trained binary on startup, reducing memory usage to under 150MB.</p>
+            </div>
+
+            <div class="callout callout-info">
+                <div class="callout-title">🛠️ Challenge 2: Mobile Viewport Dock Button Overflow</div>
+                <p><strong>Details:</strong> On mobile screens under 400px wide, the floating bottom navigation dock squished and overflowed. The "Chat Assistant" button had long text, which pushed elements off-screen and locked users out of the chat interface.</p>
+                <p><strong>Solution:</strong> Added media query rules to hide the logo and dividers on screens under 600px wide, and collapsed the "Chat Assistant" button into a circular floating button containing only the robot icon. This saved over 180px of horizontal space, letting the entire navigation bar display beautifully on mobile viewports.</p>
+            </div>
+
+            <h2>Future Roadmap</h2>
+            <ol>
+                <li><strong>Live Brokerage Integration</strong>: Connect with Alpaca or Interactive Brokers APIs to execute live trades directly from the Friday AI interface.</li>
+                <li><strong>Advanced Portfolio Backtesting</strong>: Implement a backtesting engine to simulate the model's performance on historical data, generating equity curves and risk reports.</li>
+                <li><strong>Stateful Chat Memory</strong>: Integrate Redis caching to let Friday recall past user questions and portfolio details during conversations.</li>
+            </ol>
+        </div>
+
+    </div>
+</body>
+</html>

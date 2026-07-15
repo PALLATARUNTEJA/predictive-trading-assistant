@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI - Developer Handbook & Book</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #8b5cf6;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        /* Cover Page Styling */
+        .cover-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #090d16 0%, #1e1b4b 50%, #0f172a 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            top: -25%;
+            left: -25%;
+            z-index: 1;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .cover-badge {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .cover-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #93c5fd, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-subtitle {
+            font-size: 1.35rem;
+            color: #94a3b8;
+            margin-bottom: 3.5rem;
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cover-meta {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            text-align: left;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 1px;
+            margin-bottom: 0.35rem;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .meta-value a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .meta-value a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* Book Layout Container */
+        .book-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Table of Contents */
+        .toc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 5rem;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        }
+
+        .toc-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .toc-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+        }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #cbd5e1;
+            margin: 0 1rem;
+        }
+
+        .toc-page {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Chapter Styles */
+        .chapter-container {
+            margin-bottom: 6rem;
+        }
+
+        .chapter-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--text-dark);
+            padding-bottom: 1rem;
+        }
+
+        .chapter-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -1px;
+        }
+
+        /* Section Headings */
+        h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.65rem;
+            color: var(--text-dark);
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.025rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        /* Callout Boxes */
+        .callout {
+            margin: 2rem 0;
+            padding: 1.5rem 1.75rem;
+            border-radius: 16px;
+            border-left: 5px solid;
+            font-size: 0.98rem;
+        }
+
+        .callout-info {
+            background-color: #eff6ff;
+            border-left-color: var(--primary);
+            color: #1e3a8a;
+        }
+
+        .callout-complexity {
+            background-color: #faf5ff;
+            border-left-color: var(--accent);
+            color: #581c87;
+        }
+
+        .callout-interview {
+            background-color: #fffbeb;
+            border-left-color: var(--warning);
+            color: #78350f;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 14px;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+        }
+
+        :not(pre) > code {
+            background: #f1f5f9;
+            color: var(--danger);
+            padding: 0.18rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Bullet lists */
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        li {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        /* Table Design */
+        table.complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        table.complexity-table th {
+            background-color: var(--dark);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        table.complexity-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        table.complexity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.complexity-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* SVG Architecture Diagram style */
+        .diagram-container {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+        }
+
+        /* Printable / Book Layout overrides */
+        @media print {
+            body {
+                background: #ffffff;
+                color: #000000;
+            }
+            .book-container {
+                padding: 0;
+                max-width: 100%;
+            }
+            .cover-page {
+                height: 100vh;
+                page-break-after: always;
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .cover-title {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #000000 !important;
+            }
+            .cover-subtitle, .meta-value, .meta-value a {
+                color: #334155 !important;
+            }
+            .toc-card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                page-break-after: always;
+            }
+            .chapter-container {
+                page-break-before: always;
+                margin-bottom: 0;
+            }
+            pre {
+                page-break-inside: avoid;
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            code {
+                color: #000000 !important;
+            }
+            .callout {
+                page-break-inside: avoid;
+                border: 1px solid #cbd5e1 !important;
+            }
+            .diagram-container {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-content">
+            <span class="cover-badge">Core System Reference</span>
+            <h1 class="cover-title">FRIDAY AI</h1>
+            <p class="cover-subtitle">Predictive Trading Assistant & Portfolio Command Center: A Comprehensive Handbook of Machine Learning, Software Architecture, and Real-Time Risk Management Logic</p>
+            
+            <div class="cover-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Deploy Environment</div>
+                    <div class="meta-value">Render Serverless Cloud</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Source Repository</div>
+                    <div class="meta-value"><a href="https://github.com/PALLATARUNTEJA/predictive-trading-assistant" target="_blank">github.com/predictive-trading-assistant</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Live Gateway</div>
+                    <div class="meta-value"><a href="https://pallatarunteja.github.io/predictive-trading-assistant/" target="_blank">pallatarunteja.github.io/...</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Book Content -->
+    <div class="book-container">
+
+        <!-- Table of Contents -->
+        <div class="toc-card">
+            <h2 class="toc-title">Table of Contents</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#ch1" class="toc-link">Chapter 1: System Concept & End-to-End Workflow</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">03</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch2" class="toc-link">Chapter 2: Backend Architecture & Core Execution Logic</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">07</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch3" class="toc-link">Chapter 3: Frontend Interface & Interactive Canvas Engine</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">13</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch4" class="toc-link">Chapter 4: Deployment & Pipelines Infrastructure</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">17</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch5" class="toc-link">Chapter 5: Technical Interview Q&A Companion</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">20</span>
+                </li>
+                <li class="toc-item">
+                    <a href="#ch6" class="toc-link">Chapter 6: Evolution Timeline, Challenges & Roadmaps</a>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page">26</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Chapter 1 -->
+        <div class="chapter-container" id="ch1">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 1</div>
+                <h1 class="chapter-title">System Concept & End-to-End Workflow</h1>
+            </div>
+            
+            <p><strong>Friday AI</strong> is an advanced, real-time predictive trading assistant designed to democratize high-frequency technical analysis and programmatic risk management. Positioned as an intelligent agent operating directly in the workspace of retail investors, Friday AI consolidates market scanning, technical charting, algorithmic trade execution, dynamic risk thresholds, and NLP-driven market explanations into a singular, highly cohesive platform.</p>
+
+            <h2>System Architecture Workflow</h2>
+            <p>The system operates through an asynchronous, distributed execution pipeline. Raw candlestick coordinates are fetched from exchange systems, parsed, and evaluated on the fly. The workflow operates as follows:</p>
+            
+            <div class="diagram-container">
+                <svg width="680" height="280" viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Definitions for styling -->
+                    <defs>
+                        <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#1d4ed8"/>
+                        </linearGradient>
+                        <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8b5cf6"/>
+                            <stop offset="100%" stop-color="#6d28d9"/>
+                        </linearGradient>
+                        <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#1e293b"/>
+                            <stop offset="100%" stop-color="#0f172a"/>
+                        </linearGradient>
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                            <drop-shadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.08"/>
+                        </filter>
+                    </defs>
+
+                    <!-- Background grids -->
+                    <rect width="680" height="280" rx="12" fill="#fafafa"/>
+
+                    <!-- Nodes -->
+                    <!-- Data Fetcher node -->
+                    <rect x="20" y="90" width="120" height="80" rx="10" fill="url(#darkGrad)" filter="url(#shadow)"/>
+                    <text x="80" y="125" text-anchor="middle" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="bold" font-size="12">yFinance API</text>
+                    <text x="80" y="145" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="9">Market Candlesticks</text>
+
+                    <!-- Backend Processor Node -->
+                    <rect x="200" y="50" width="150" height="160" rx="10" fill="url(#blueGrad)" filter="url(#shadow)"/>
+                    <text x="275" y="80" text-anchor="middle" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="bold" font-size="13">FastAPI Backend</text>
+                    <text x="275" y="110" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="10">Random Forest ML</text>
+                    <text x="275" y="130" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="10">Technical Signals</text>
+                    <text x="275" y="150" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="10">Risk Freeze Thread</text>
+                    <text x="275" y="170" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="10">Gemini LLM NLP</text>
+
+                    <!-- Frontend Interface Node -->
+                    <rect x="420" y="90" width="120" height="80" rx="10" fill="url(#purpleGrad)" filter="url(#shadow)"/>
+                    <text x="480" y="125" text-anchor="middle" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="bold" font-size="12">SPA Frontend</text>
+                    <text x="480" y="145" text-anchor="middle" fill="#ddd6fe" font-family="sans-serif" font-size="9">Lightweight Charts</text>
+
+                    <!-- Client Browser Node -->
+                    <rect x="580" y="105" width="80" height="50" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+                    <text x="620" y="135" text-anchor="middle" fill="#334155" font-family="sans-serif" font-weight="bold" font-size="10">User Agent</text>
+
+                    <!-- Connection Lines -->
+                    <path d="M 140 130 L 200 130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+                    <path d="M 350 110 L 420 110" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,4" fill="none"/>
+                    <path d="M 420 150 L 350 150" stroke="#8b5cf6" stroke-width="2" fill="none"/>
+                    <path d="M 540 130 L 580 130" stroke="#cbd5e1" stroke-width="2" fill="none"/>
+
+                    <!-- Markers -->
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+                    </marker>
+
+                    <!-- Context Text overlays -->
+                    <text x="170" y="120" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="9">Pull</text>
+                    <text x="385" y="100" text-anchor="middle" fill="#3b82f6" font-family="sans-serif" font-size="9">REST API</text>
+                    <text x="385" y="170" text-anchor="middle" fill="#8b5cf6" font-family="sans-serif" font-size="9">WebSockets</text>
+                </svg>
+            </div>
+
+            <div class="callout callout-info">
+                <div class="callout-title">💡 Core Architecture Pillars</div>
+                <ul>
+                    <li><strong>Asynchronous Thread Isolation</strong>: The FastAPI server manages the REST endpoints concurrently while spawning isolated WebSocket communication rings and safety check routines that prevent container lag.</li>
+                    <li><strong>Offline Machine Learning Execution</strong>: Model binaries are trained and compiled in local developer environments using historic multi-decade indices to control space complexities, and loaded instantly on startup as pre-trained modules.</li>
+                </ul>
+            </div>
+
+            <h2>Frameworks & Libraries Stack</h2>
+            <p>To implement this system, several modern frameworks and specialized libraries were chosen to guarantee real-time latency and performance:</p>
+            <ul>
+                <li><strong>FastAPI (Python)</strong>: Serves as the high-throughput web server gateway. Chosen for its native support for async/await execution, automated Pydantic request validation, and built-in WebSocket support.</li>
+                <li><strong>Scikit-Learn & Joblib</strong>: Standardized data science utilities. Scikit-learn trains the Random Forest classifier model. Joblib packages and decompresses the trained binary into memory instantly.</li>
+                <li><strong>yFinance (Yahoo Finance)</strong>: Pulls real-time intraday candlestick frames from international exchanges.</li>
+                <li><strong>Lightweight Charts (TradingView)</strong>: The visual client library that compiles canvas layers dynamically, allowing users to draw overlays and trace price coordinate feeds in real-time.</li>
+                <li><strong>Three.js & GSAP</strong>: Implements Awwwards-worthy immersive design. Three.js renders a 3D animated particle background, while GSAP controls the spring elastic cursor trailing and dock entrance sequences.</li>
+            </ul>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="chapter-container" id="ch2">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 2</div>
+                <h1 class="chapter-title">Backend Architecture & Core Execution Logic</h1>
+            </div>
+
+            <p>The backend of Friday AI is engineered using Python 3.10 and FastAPI. It operates as a stateless RESTful service combined with a stateful real-time WebSockets connection manager to notify client browsers of price movements and stop-loss triggers.</p>
+
+            <h2>Machine Learning Random Forest Engine</h2>
+            <p>The core predictive engine uses a <strong>Random Forest Classifier</strong> model trained on historic daily candlestick bars. The model targets predicting whether the closing price in three periods (days) will be higher (<code>UP</code>) or lower (<code>DOWN</code>) than the current closing price.</p>
+            
+            <h3>Technical Indicator Feature Extraction</h3>
+            <p>For each stock candlestick row in the historic database, the model extracts technical indicators as features:</p>
+            <ul>
+                <li><strong>RSI (Relative Strength Index)</strong>: Measures price momentum over a 14-period window.</li>
+                <li><strong>MACD & MACD Signal</strong>: Tracks moving average crossovers to log trend direction.</li>
+                <li><strong>SMA 20 & SMA 50</strong>: Identifies support/resistance structures and baseline trend alignments.</li>
+                <li><strong>Close-to-SMA Ratios</strong>: Calculates percentage distance from moving averages to avoid overbought peaks.</li>
+            </ul>
+
+            <pre><code># Feature creation segment in backend training pipeline
+import pandas as pd
+import numpy as np
+
+def extract_features(df):
+    # Calculate SMA
+    df['sma_20'] = df['Close'].rolling(window=20).mean()
+    df['sma_50'] = df['Close'].rolling(window=50).mean()
+    
+    # Calculate RSI
+    delta = df['Close'].diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+    rs = gain / loss
+    df['rsi'] = 100 - (100 / (1 + rs))
+    
+    # Ratios
+    df['ratio_sma20'] = df['Close'] / df['sma_20']
+    df['ratio_sma50'] = df['Close'] / df['sma_50']
+    
+    # Target label: 1 if close in 3 days is higher, else 0
+    df['target'] = (df['Close'].shift(-3) > df['Close']).astype(int)
+    
+    return df.dropna()</code></pre>
+
+            <div class="callout callout-complexity">
+                <div class="callout-title">⚡ Complexity Analysis: Machine Learning Scan Module</div>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Time Complexity</th>
+                            <th>Space Complexity</th>
+                            <th>Logic Explanation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Indicator Calculation</strong></td>
+                            <td>\(O(N)\)</td>
+                            <td>\(O(N)\)</td>
+                            <td>Rolling windows execute in linear time relative to input candlestick length \(N\).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Model Prediction</strong></td>
+                            <td>\(O(T \times D)\)</td>
+                            <td>\(O(T \times D)\)</td>
+                            <td>For \(T\) trees in the forest and maximum depth \(D\). Executed in constant time since \(T\) and \(D\) are fixed.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory Binary Loading</strong></td>
+                            <td>\(O(1)\)</td>
+                            <td>\(O(M)\)</td>
+                            <td>Loading the Joblib model on server startup uses constant CPU and scales with model file size \(M\).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Real-Time Risk Management & Safety Thread</h2>
+            <p>To protect capital, Friday AI runs a dedicated, background safety manager loop. When a user buys paper shares of a stock, the backend establishes a tracker inside a state dictionary. As new tick updates are pulled from yFinance, the safety checker triggers evaluations:</p>
+            
+            <h3>Stop Loss Triggering</h3>
+            <p>If the last traded price falls below the calculated stop-loss threshold:
+            \[P_{tick} \le P_{entry} \times (1 - \text{Stop Loss \%})\]
+            The system triggers an automatic emergency exit order, updates the ledger, logs the event to the user's warning container, and issues a WebSocket alarm notification to play an acoustic alarm on the user's browser.</p>
+
+            <h3>Drawdown Threshold Freezing</h3>
+            <p>Every time the portfolio values update, the backend evaluates the aggregate portfolio drawdown from the starting balance:
+            \[\text{Drawdown \%} = \frac{\text{Initial Balance} - \text{Current Value}}{\text{Initial Balance}} \times 100\]
+            If this value exceeds the user's drawdown stop slider setting (adjustable from 2% to 15%), the system instantly flags <code>trading_frozen = True</code>. In this state, all future buy requests are blocked, open positions are liquidated, and a lockdown notification alerts the user.</p>
+
+            <pre><code># Asynchronous Risk Management check loop inside backend/app.py
+async def monitor_portfolio_risk():
+    global portfolio
+    while True:
+        await asyncio.sleep(2.5) # Non-blocking delay
+        
+        # Check active stock price triggers
+        for symbol, position in list(portfolio["holdings"].items()):
+            latest_price = await fetch_ticker_price(symbol)
+            if latest_price <= position["stop_loss_val"]:
+                # Trigger emergency stop-loss exit
+                execute_emergency_sell(symbol, position["shares"], latest_price)
+                await notify_ws({
+                    "type": "DANGER",
+                    "title": f"STOP LOSS TRIGGERED: {symbol}",
+                    "message": f"Sold {position['shares']} shares at ${latest_price} (Cap protection limit breached)."
+                })</code></pre>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="chapter-container" id="ch3">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 3</div>
+                <h1 class="chapter-title">Frontend Interface & Interactive Canvas Engine</h1>
+            </div>
+
+            <p>The frontend interface of Friday AI is implemented as a single-page application (SPA) using vanilla HTML5, CSS3, and JavaScript (ES6+). It interfaces with the backend via REST endpoints and WebSocket protocols.</p>
+
+            <h2>Single Page Application (SPA) View Router</h2>
+            <p>To keep the interface clean and organized, the dashboard wraps card sections into dedicated views (<code>#view-home</code>, <code>#view-chart</code>, <code>#view-holdings</code>, and <code>#view-signals</code>). When a tab is selected from the floating bottom navigation dock, the script updates class attributes:</p>
+            <ul>
+                <li>Hides all sections using <code>display: none</code> class directives.</li>
+                <li>Appends the <code>.active</code> class to display the selected section (using <code>display: block</code> or <code>display: grid</code>).</li>
+                <li>Animates the card layout container entrance using a GSAP fade-in transition:
+                <pre><code>gsap.fromTo(targetView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4 });</code></pre>
+                </li>
+            </ul>
+
+            <h2>TradingView Lightweight Charts Integration</h2>
+            <p>The interactive charting interface uses the high-performance TradingView Lightweight Charts canvas. The canvas rendering lifecycle requires careful coordination:</p>
+            <ol>
+                <li><strong>Invisible Containers</strong>: Lightweight Charts cannot render grid coordinates correctly if initialized inside a container with <code>display: none</code> (the container client width is computed as 0px, causing the canvas elements to crash or render with 0px width).</li>
+                <li><strong>Resize Trigger Solution</strong>: When switching views to the <code>Chart</code> tab, the Javascript router invokes a short delay (50ms) to let the DOM display the view wrapper, and then explicitly triggers:
+                <pre><code>chart.resize(container.clientWidth, container.clientHeight);</code></pre>
+                This forces the grid coordinate columns to recalculate and adapt perfectly to the viewport width.</li>
+            </ol>
+
+            <div class="callout callout-info">
+                <div class="callout-title">🎨 Awwwards Creative UI Interactivity</div>
+                <ul>
+                    <li><strong>3D Particle Space Network</strong>: Renders 200 drift particles inside a WebGL context using Three.js, adding subtle interactive parallax drift tied to the user's mouse movements.</li>
+                    <li><strong>GSAP Cursor Follower</strong>: A custom div tracks the mouse coordinates. An outer glowing follower div trails the cursor with an elastic delay, scaling up and changing colors when hovering over interactive buttons.</li>
+                    <li><strong>Apple-style Dock</strong>: The bottom menu capsule uses a dark semi-transparent glassmorphism style (`backdrop-filter: blur(25px) saturate(180%)`) with a high z-index, allowing background components to blur dynamically as they scroll behind it.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="chapter-container" id="ch4">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 4</div>
+                <h1 class="chapter-title">Deployment & Pipelines Infrastructure</h1>
+            </div>
+
+            <p>To achieve high uptime, Friday AI is hosted across a distributed hybrid cloud pipeline. The deployment separates the stateful processing server from the static browser frontend asset bundle.</p>
+
+            <h2>Stateless Backend Hosting: Render</h2>
+            <p>The FastAPI backend server is deployed on the <strong>Render Serverless Cloud</strong>. Because serverless containers on Render's free tier automatically sleep after 15 minutes of inactivity and are subject to tight memory limitations (512MB RAM), the backend architecture implements two key mitigations:</p>
+            <ul>
+                <li><strong>Offline Training</strong>: Model binaries are trained and compiled locally in developer environments using multi-decade indices, and the pre-trained `backend/model.joblib` binary is pushed to GitHub. This avoids high CPU/RAM usage during container spin-up, preventing out-of-memory crashes.</li>
+                <li><strong>Keep-Alive Pings</strong>: The frontend scripts issue lightweight check pings on page load to awake the sleeping backend container, and WebSocket heartbeats maintain the active socket connection.</li>
+            </ul>
+
+            <h2>Static Frontend Hosting: GitHub Pages</h2>
+            <p>The static frontend assets (`index.html`, `styles.css`, `app.js`, logos) are hosted on **GitHub Pages**. GitHub Pages operates as a static CDN delivery network, guaranteeing sub-second content delivery speeds globally. The static files communicate with the backend dynamically using HTTPS REST API requests and stateful WebSocket protocols.</p>
+
+            <div class="callout callout-info">
+                <div class="callout-title">🚀 Deployment Gateway References</div>
+                <ul>
+                    <li><strong>Live Dashboard Webpage</strong>: <a href="https://pallatarunteja.github.io/predictive-trading-assistant/" target="_blank">https://pallatarunteja.github.io/predictive-trading-assistant/</a></li>
+                    <li><strong>Cloud Backend API Gateway</strong>: <a href="https://predictive-trading-assistant.onrender.com" target="_blank">https://predictive-trading-assistant.onrender.com</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chapter 5 -->
+        <div class="chapter-container" id="ch5">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 5</div>
+                <h1 class="chapter-title">Technical Interview Q&A Companion</h1>
+            </div>
+
+            <p>This companion guide compiles high-level and low-level technical interview questions and answers, designed to help developers explain the architecture, data science choices, and performance optimizations of the Friday AI platform during engineering interviews.</p>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">🗣️ Q1: Why did you choose a Random Forest Classifier instead of deep learning (e.g., LSTM) for price prediction?</div>
+                <p><strong>Answer:</strong> LSTMs and neural networks are prone to severe overfitting on noisy financial timeseries data unless fed with millions of parameters, and they require massive GPU instances to run, which is impractical for free cloud tiers (like Render's 512MB RAM limit). Random Forests build an ensemble of decision trees, which reduces variance through bootstrap aggregation (bagging), handles multi-dimensional indicator features (RSI, SMA, MACD) without scaling issues, and executes predictions in constant time (\(O(T \times D)\)) with minimal memory usage.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">🗣️ Q2: How did you handle the timezone shift between local users and the New York Stock Exchange?</div>
+                <p><strong>Answer:</strong> Financial chart intervals are highly sensitive to exchange time alignment. If values are evaluated in local time (e.g., IST/GMT), the start and end of daily candles will shift, breaking candlestick calculations. To resolve this, the backend processes all historic stock queries in New York Exchange Time (<code>America/New_York</code>). On the client side, the Lightweight Charts library was configured with a custom local formatter:
+                <pre><code>timeZone: 'America/New_York'</code></pre>
+                This ensures the tick marks on the X-axis align with the Wall Street session (EST/EDT) regardless of where the user is physically located.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">🗣️ Q3: Explain the z-index and translation overrides you solved on the bottom navigation dock.</div>
+                <p><strong>Answer:</strong> The floating navigation capsule is centered in CSS using <code>left: 50%</code> and <code>transform: translateX(-50%)</code>. When animating the entrance using GSAP, assigning <code>y: 50</code> caused GSAP to overwrite the element's inline transform styles to <code>translate(0px, 50px)</code>, removing the <code>translateX(-50%)</code> offset and throwing the bar off-screen on mobile devices. I resolved this by migrating the animation to native CSS `@keyframes` using <code>transform: translate(-50%, 50px) to translate(-50%, 0)</code>, which isolates the animation rendering from Javascript execution halts and guarantees visibility.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">🗣️ Q4: How is the risk-management freeze thread designed to be thread-safe in FastAPI?</div>
+                <p><strong>Answer:</strong> FastAPI operates on an asynchronous event loop. Instead of blocking OS threads which would choke API requests, the background portfolio monitoring loop uses Python's native <code>asyncio</code> task Scheduler. The safety checker runs <code>await asyncio.sleep(2.5)</code>, returning control back to the event loop to process incoming trade requests, and uses async HTTP clients (like <code>httpx</code> or async routines) to update shared global portfolio records safely.</p>
+            </div>
+
+            <div class="callout callout-interview">
+                <div class="callout-title">🗣️ Q5: What is the time complexity of the market scanning operation, and how is it optimized?</div>
+                <p><strong>Answer:</strong> The time complexity of scanning \(M\) tickers with \(N\) candlesticks each is \(O(M \times N)\). Fetching data from external APIs sequentially would cause severe network bottlenecks. To optimize this, the backend implements multi-threaded caching. Daily scan profiles are parsed and cached in local memory, and yFinance queries pull batch indexes rather than single historical lines, reducing scan time from 30 seconds to under 2 seconds.</p>
+            </div>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div class="chapter-container" id="ch6">
+            <div class="chapter-header">
+                <div class="chapter-num">Chapter 6</div>
+                <h1 class="chapter-title">Evolution Timeline, Challenges & Roadmaps</h1>
+            </div>
+
+            <p>This chapter documents the software engineering journey of Friday AI, detailing how the system evolved from a simple Python script to a fully interactive, production-grade cloud platform.</p>
+
+            <h2>Evolution Timeline</h2>
+            <ul>
+                <li><strong>Phase 1: CLI Prototype & Data Pipeline</strong>: Built the initial Python scripts to interface with yFinance, extract features (RSI, SMA), train the machine learning classifier, and output buy/sell signals in the console.</li>
+                <li><strong>Phase 2: FastAPI API Gateway</strong>: Wrapped the CLI scripts into RESTful endpoints. Introduced sqlite databases to persist paper trading transactions and daily drawdown settings.</li>
+                <li><strong>Phase 3: Interactive Dashboard UI</strong>: Built the HTML dashboard using the TradingView Lightweight Charts canvas. Added simple AJAX polling to update prices every 5 seconds.</li>
+                <li><strong>Phase 4: Creative UI Redesign</strong>: Upgraded the user interface to implement Awwwards-worthy design rules. Integrated Three.js 3D background particle clouds, GSAP cursor tracking, and a glassmorphic bottom navigation dock.</li>
+                <li><strong>Phase 5: Single Page Application (SPA) Migration</strong>: Split the dashboard into dedicated tab views (Portfolio, Chart, Holdings, Signals) to avoid vertical page clutter. Developed the native CSS spring-elastic slide entrance animations to guarantee mobile responsiveness.</li>
+            </ul>
+
+            <h2>Technical Challenges Faced & Solutions</h2>
+            <div class="callout callout-info">
+                <div class="callout-title">🛠️ Challenge 1: Render Out-of-Memory Container Crashes</div>
+                <p><strong>Details:</strong> Render's free hosting tier enforces a strict memory limit of 512MB RAM. Initially, when the FastAPI backend spun up, it executed the feature extraction and Random Forest model training pipeline on historical data in real-time. This process spiked memory consumption above 600MB, triggering immediate container kills by the hosting environment.</p>
+                <p><strong>Solution:</strong> Moved the model training pipeline offline to the developer's local machine. The trained estimator is saved to a compressed binary file (<code>model.joblib</code>) and pushed to GitHub. The Render backend simply loads the pre-trained binary on startup, reducing memory usage from 600MB to under 150MB.</p>
+            </div>
+
+            <div class="callout callout-info">
+                <div class="callout-title">🛠️ Challenge 2: Mobile Viewport Dock Button Overflow</div>
+                <p><strong>Details:</strong> The bottom floating nav dock was squishing on mobile screens under 400px wide. The "Chat Assistant" button had long text, which overflowed the nav bar boundaries, pushing elements off-screen and locking users out of the chat interface.</p>
+                <p><strong>Solution:</strong> Added media query rules to hide the logo and dividers on screens under 600px wide, and collapsed the "Chat Assistant" button into a circular floating button containing only the robot icon. This saved over 180px of horizontal space, letting the entire navigation bar display beautifully on mobile viewports.</p>
+            </div>
+
+            <h2>Future Implementation Roadmap</h2>
+            <ol>
+                <li><strong>Live Brokerage API Integration</strong>: Replace paper trading endpoints with secure REST Webhooks to connect with retail brokerage APIs (such as Interactive Brokers or Alpaca), enabling live trade execution directly from the Friday AI command center.</li>
+                <li><strong>Historical Portfolio Backtester</strong>: Build an offline backtesting engine that simulates the Random Forest model's performance over multi-decade cycles, generating equity curves and Sharpe ratio reports.</li>
+                <li><strong>Advanced NLP Conversational Memory</strong>: Integrate stateful chat histories using Redis cache databases to allow the Gemini LLM assistant to recall past user portfolio questions during ongoing conversations.</li>
+            </ol>
+        </div>
+
+    </div>
+</body>
+</html>
