@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friday AI - The Comprehensive Quantitative & Architectural Reference E-Book</title>
+    <title>Friday AI - Developer Handbook & Code Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -281,18 +281,6 @@
             color: #581c87;
         }
 
-        .callout-info {
-            background-color: #eff6ff;
-            border-left-color: var(--primary);
-            color: #1e3a8a;
-        }
-
-        .callout-complexity {
-            background-color: #faf5ff;
-            border-left-color: var(--accent);
-            color: #581c87;
-        }
-
         .callout-interview {
             background-color: #fffbeb;
             border-left-color: var(--warning);
@@ -498,29 +486,14 @@
                     <span class="toc-page">19</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch4" class="toc-link">Chapter 4: Advanced Quantitative Trading Math & Metrics</a>
+                    <a href="#ch4" class="toc-link">Chapter 4: 50+ Comprehensive Interview Questions & Answers</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">31</span>
+                    <span class="toc-page">30</span>
                 </li>
                 <li class="toc-item">
-                    <a href="#ch5" class="toc-link">Chapter 5: Enterprise Scaling Microservices & Infrastructure</a>
+                    <a href="#ch5" class="toc-link">Chapter 5: Evolutionary Timeline & Technical Challenges</a>
                     <span class="toc-dots"></span>
-                    <span class="toc-page">36</span>
-                </li>
-                <li class="toc-item">
-                    <a href="#ch6" class="toc-link">Chapter 6: Cyber Security, Rate Limiting & Auth Protocols</a>
-                    <span class="toc-dots"></span>
-                    <span class="toc-page">41</span>
-                </li>
-                <li class="toc-item">
-                    <a href="#ch7" class="toc-link">Chapter 7: 50+ Comprehensive Interview Questions & Answers</a>
-                    <span class="toc-dots"></span>
-                    <span class="toc-page">45</span>
-                </li>
-                <li class="toc-item">
-                    <a href="#ch8" class="toc-link">Chapter 8: Evolutionary Timeline & Technical Challenges</a>
-                    <span class="toc-dots"></span>
-                    <span class="toc-page">65</span>
+                    <span class="toc-page">46</span>
                 </li>
             </ul>
         </div>
@@ -905,154 +878,6 @@ let socket = null;</code></pre>
         <div class="chapter-container" id="ch4">
             <div class="chapter-header">
                 <div class="chapter-num">Chapter 4</div>
-                <h1 class="chapter-title">Advanced Quantitative Trading Math & Metrics</h1>
-            </div>
-
-            <p>This chapter documents the mathematical formulas and quant methods used to measure risk, reward, and position sizing allocations inside advanced trading assistants.</p>
-
-            <h2>1. Sharpe Ratio</h2>
-            <p>The **Sharpe Ratio** measures the excess return per unit of deviation in an investment asset or portfolio strategy:</p>
-            \[S_p = \frac{E[R_p - R_f]}{\sigma_p}\]
-            <p>Where:
-            <ul>
-                <li>\(R_p\) is the asset or portfolio return rate.</li>
-                <li>\(R_f\) is the risk-free return rate (e.g., U.S. Treasury Bond yields).</li>
-                <li>\(\sigma_p\) is the standard deviation (volatility) of the portfolio's excess returns.</li>
-            </ul>
-            A Sharpe ratio above **1.0** is considered good, above **2.0** is very good, and above **3.0** is excellent, indicating high returns relative to risk.</p>
-
-            <h2>2. Sortino Ratio</h2>
-            <p>Unlike the Sharpe Ratio, which penalizes both upward volatility (gains) and downward volatility (losses), the **Sortino Ratio** only penalizes downward price deviations (losses), which is a more realistic measure of downside risk:</p>
-            \[S = \frac{R_p - R_f}{\sigma_d}\]
-            <p>Where \(\sigma_d\) is the standard deviation of negative asset returns (downside deviation).</p>
-
-            <h2>3. Kelly Criterion Formula</h2>
-            <p>To determine optimal position sizing (how much capital to risk on a single trade), quantitative traders use the **Kelly Criterion** equation:</p>
-            \[f^* = \frac{bp - q}{b}\]
-            <p>Where:
-            <ul>
-                <li>\(f^*\) is the fraction of current portfolio cash to allocate to the trade.</li>
-                <li>\(b\) is the decimal odds received on the trade (e.g. win payout divided by loss payout).</li>
-                <li>\(p\) is the probability of winning (our Random Forest model confidence score).</li>
-                <li>\(q\) is the probability of losing (\(1 - p\)).</li>
-            </ul>
-            If the model predicts a trade with 70% confidence (\(p = 0.7\)) and a 1:1 risk-to-reward ratio (\(b = 1\)), the Kelly fraction is:
-            \[f^* = \frac{(1 \times 0.7) - 0.3}{1} = 0.40 \text{ or } 40\%\]
-            To avoid overall volatility, most risk managers apply a **Fractional Kelly** strategy, risking only half or a quarter of the calculated Kelly amount (e.g., 10%).</p>
-        </div>
-
-        <!-- Chapter 5 -->
-        <div class="chapter-container" id="ch5">
-            <div class="chapter-header">
-                <div class="chapter-num">Chapter 5</div>
-                <h1 class="chapter-title">Enterprise Scaling Microservices & Infrastructure</h1>
-            </div>
-
-            <p>To scale Friday AI to thousands of concurrent users in production, the architecture must transition from a single serverless server to a distributed, containerized microservices infrastructure.</p>
-
-            <h2>1. Production Topology Flow</h2>
-            <p>In an enterprise setup, requests are balanced across multiple instances of our FastAPI application containerized inside Docker and managed by a Kubernetes cluster:</p>
-
-            <div class="diagram-container">
-                <svg width="680" height="280" viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/>
-                        </linearGradient>
-                        <linearGradient id="purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/>
-                        </linearGradient>
-                        <linearGradient id="slate" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="680" height="280" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-                    
-                    <!-- Clients -->
-                    <rect x="20" y="110" width="100" height="50" rx="8" fill="url(#slate)"/>
-                    <text x="70" y="140" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">Browser Clients</text>
-                    
-                    <!-- Load Balancer -->
-                    <rect x="160" y="90" width="100" height="90" rx="8" fill="url(#blue)"/>
-                    <text x="210" y="130" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">Nginx / ALB</text>
-                    <text x="210" y="150" text-anchor="middle" fill="#bfdbfe" font-family="sans-serif" font-size="9">Load Balancer</text>
-
-                    <!-- FastAPI Nodes -->
-                    <rect x="310" y="30" width="120" height="50" rx="6" fill="url(#purple)"/>
-                    <text x="370" y="60" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 1</text>
-                    
-                    <rect x="310" y="110" width="120" height="50" rx="6" fill="url(#purple)"/>
-                    <text x="370" y="140" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 2</text>
-                    
-                    <rect x="310" y="190" width="120" height="50" rx="6" fill="url(#purple)"/>
-                    <text x="370" y="220" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">FastAPI Pod 3</text>
-
-                    <!-- Redis PubSub & PostgreSQL -->
-                    <rect x="490" y="60" width="130" height="60" rx="8" fill="#0f172a"/>
-                    <text x="555" y="90" text-anchor="middle" fill="#38bdf8" font-family="sans-serif" font-size="10" font-weight="bold">Redis Cache</text>
-                    <text x="555" y="105" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">WS PubSub Message Bus</text>
-
-                    <rect x="490" y="150" width="130" height="60" rx="8" fill="#0f172a"/>
-                    <text x="555" y="180" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="10" font-weight="bold">PostgreSQL</text>
-                    <text x="555" y="195" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">PgBouncer Pooler</text>
-
-                    <!-- Intersect Lines -->
-                    <line x1="120" y1="135" x2="160" y2="135" stroke="#94a3b8" stroke-width="2"/>
-                    <line x1="260" y1="135" x2="310" y2="55" stroke="#94a3b8" stroke-width="1.5"/>
-                    <line x1="260" y1="135" x2="310" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
-                    <line x1="260" y1="135" x2="310" y2="215" stroke="#94a3b8" stroke-width="1.5"/>
-
-                    <path d="M 430 55 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-                    <path d="M 430 135 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-                    <path d="M 430 215 L 490 90" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-
-                    <path d="M 430 55 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
-                    <path d="M 430 135 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
-                    <path d="M 430 215 L 490 180" stroke="#34d399" stroke-width="1.5" fill="none"/>
-                </svg>
-            </div>
-
-            <h2>2. Redis PubSub & PostgreSQL scaling</h2>
-            <ul>
-                <li><strong>Redis PubSub Message Bus</strong>: In a multi-server setup, WebSocket clients are split across different servers. If Server 1 triggers a stop-loss sell, clients connected to Server 2 wouldn't receive the notification. To resolve this, we implement **Redis Pub/Sub**. When an alert is triggered, it is published to a shared Redis channel, and all server pods listen to this channel and broadcast the message to their local clients.</li>
-                <li><strong>PostgreSQL Database Migration</strong>: SQLite is a file-based database that locks when writing, causing bottlenecks under high load. In production, we migrate to a **PostgreSQL** instance with **PgBouncer** connection pooling to manage database connections efficiently.</li>
-            </ul>
-        </div>
-
-        <!-- Chapter 6 -->
-        <div class="chapter-container" id="ch6">
-            <div class="chapter-header">
-                <div class="chapter-num">Chapter 6</div>
-                <h1 class="chapter-title">Cyber Security, Rate Limiting & Auth Protocols</h1>
-            </div>
-
-            <p>Security is critical for trading applications to prevent malicious attacks and protect user funds.</p>
-
-            <h2>1. Rate Limiting: The Token Bucket Algorithm</h2>
-            <p>To prevent malicious scripts from overwhelming our market scanner endpoints, we implement rate limiting using the **Token Bucket Algorithm**:
-            <ul>
-                <li>The server maintains a "bucket" that holds a maximum number of tokens (e.g., 30 tokens) for each IP address.</li>
-                <li>Each API request costs one token.</li>
-                <li>Tokens refill at a constant rate (e.g., 1 token per second).</li>
-                <li>If a user sends 100 requests in 5 seconds, the bucket empties, subsequent requests are blocked, and the server returns an `HTTP 429 Too Many Requests` error.</li>
-            </ul>
-            </p>
-
-            <h2>2. Secure Session Authentication</h2>
-            <p>To secure trading commands, we use stateless **JWT (JSON Web Tokens)**:
-            <ol>
-                <li>The user logs in with their credentials.</li>
-                <li>The server validates the credentials and returns an encrypted JWT signed with a private key (HS256 algorithm).</li>
-                <li>The client stores the token securely in `HttpOnly` cookies, preventing access via malicious client-side JavaScript (XSS attacks).</li>
-                <li>For each trade command (buy/sell), the client sends this cookie, and the server validates the signature before executing the order.</li>
-            </ol>
-            </p>
-        </div>
-
-        <!-- Chapter 7 -->
-        <div class="chapter-container" id="ch7">
-            <div class="chapter-header">
-                <div class="chapter-num">Chapter 7</div>
                 <h1 class="chapter-title">50+ Comprehensive Interview Questions & Answers</h1>
             </div>
 
@@ -1223,7 +1048,7 @@ let socket = null;</code></pre>
                 <p><strong>Answer:</strong> The nav dock is centered horizontally using <code>left: 50%</code> and <code>transform: translateX(-50%)</code>. Animating `y` in GSAP overwrote the element's transform property to `translate(0px, y)`, removing the horizontal centering and throwing the bar off-screen. We resolved this by migrating the animation to native CSS `@keyframes` which isolates the animation rendering from Javascript execution halts.</p>
             </div>
 
-            <h2>Section E: System Design & WebSockets</h2>
+            <h2>Section D: System Design & WebSockets</h2>
 
             <div class="callout callout-interview">
                 <div class="callout-title">Q31: What is a WebSocket handshake?</div>
@@ -1334,11 +1159,11 @@ let socket = null;</code></pre>
             </div>
         </div>
 
-        <!-- Chapter 8 -->
-        <div class="chapter-container" id="ch8">
+        <!-- Chapter 5 -->
+        <div class="chapter-container" id="ch5">
             <div class="chapter-header">
-                <div class="chapter-num">Chapter 8</div>
-                <h1 class="chapter-title">Evolution, Challenges & Engineering Journey</h1>
+                <div class="chapter-num">Chapter 5</div>
+                <h1 class="chapter-title">Evolutionary Timeline & Technical Challenges</h1>
             </div>
 
             <p>Friday AI began as a simple Python terminal script and evolved into a production-grade, real-time predictive trading platform. This chapter documents the engineering challenges faced during development and our solutions.</p>
